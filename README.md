@@ -1,4 +1,4 @@
-# plaSquid: PLAsmid Search in seQeuencing Data.
+# plaSquid: PLAsmid Search in seQuencing Data.
 
 - plaSquid is a Nextflow pipeline for plasmid detection and classification in genomic and metagenomic data. This pipeline uses either genomic or metagenomic assemblies as input. It uses two different approaches to look for plasmids: to search against a plasmidic database and to look for plasmid specific genes (i.e. RIP and Relaxases).
 
