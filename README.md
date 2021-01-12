@@ -1,4 +1,4 @@
-# plaSquid: PLAsmid Search in seQuencIng Data.
+# plaSquid: PLAsmid SeQuences IDentification in metagenomic assemblies.  
 
 ### Description
 
