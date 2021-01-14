@@ -90,13 +90,13 @@ dat <- c(cns, sim, psn, pll)
      
       df[1,] <- dat
      
-      write_delim(df, delim = "\t", path = paste0(cns,".tsv"))
+      write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE)
 
  } else {
    
       df[1,] <- c(cns, sim, NA, NA)
    
-      write_delim(df, delim = "\t", path = paste0(cns,".tsv")) 
+      write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE) 
    
  }
 

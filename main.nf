@@ -8,6 +8,7 @@ params.contigs = "*.fasta"
 include { Splitter } from "./Modules/processes.nf"
 include { Mapping_pr } from "./Modules/processes.nf"
 include { Parse_paf } from "./Modules/processes.nf"
+include { MakeBldb } from "./Modules/processes.nf"
 include { RetrievePlasmids } from "./Modules/processes.nf"
 
 
@@ -33,13 +34,13 @@ Mapping_pr.out
 
 Parse_paf(paf_parse_ch)   
     Parse_paf.out
-              .view()
-              .set{ retrieve_ch }
-              
+             .collect()
+             .set{ retrieve_ch }
 
-RetrievePlasmids( retrieve_ch, fasta_ch)
+RetrievePlasmids(retrieve_ch, fasta_ch)
+    
+
 }
-
 
 
 
