@@ -56,47 +56,36 @@ process Parse_paf {
 }
 
 
-process MakeBldb {
+process ConcTab {
 
    input:
-   path contigs
+   path "*.tsv"   
 
    output:
-   path "blast.db*"
+   path "temp.tsv"
 
    script:
    """
-   
-   awk '/^>/{print ">Contig-" ++i; next}{print}' ${contigs} > tmp
+   cat *.tsv > temp.tsv
 
-   makeblastdb -in tmp -dbtype nucl -out blast.db -parse_seqids -hash_index
-   
-   
    """
+    
+   
 }
 
 process RetrievePlasmids {
 
    input:
-   path "*.tsv"
+   path "temp.tsv"
    path contigs
    
-
    output:
-   path "contigs_list.txt"
-   path "plasmids.fasta"
+   path "Minidist_result.tsv"
+   path "Minidist_contigs.fasta"
 
    script:
    """
-   cat *.tsv | cut -f1 > contigs_list.txt
-
-   awk '/^>/{print ">Contig-" ++i; next}{print}' ${contigs} > tmp
-
-   makeblastdb -in tmp -dbtype nucl -out blast.db -parse_seqids -hash_index
+   Rscript $baseDir/bin/Retrieve_plasmids.R temp.tsv ${contigs}
    
-   blastdbcmd -db blast.db -dbtype nucl -entry_batch contigs_list.txt -out plasmids.fasta
-
    """
-
-
 }
