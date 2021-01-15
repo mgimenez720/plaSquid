@@ -45,7 +45,7 @@ process Parse_paf {
     tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
     
     output:
-    tuple val(contig_id), ("${contig_id}.tsv")
+    file "*.tsv"
 
     script:
     """
@@ -56,14 +56,13 @@ process Parse_paf {
 }
 
 
-process RetrievePlasmids {
+process MakeBldb {
 
    input:
-   tuple val(contig_id), ("${contig_id}.tsv")
    path contigs
 
    output:
-   file "plasmids_contigs.fasta"
+   path "blast.db*"
 
    script:
    """
@@ -72,7 +71,32 @@ process RetrievePlasmids {
 
    makeblastdb -in tmp -dbtype nucl -out blast.db -parse_seqids -hash_index
    
-   blastdbcmd -db blast.db -dbtype nucl -entry ${contig_id} >> plasmid_contigs.fasta 
+   
+   """
+}
+
+process RetrievePlasmids {
+
+   input:
+   path "*.tsv"
+   path contigs
+   
+
+   output:
+   path "contigs_list.txt"
+   path "plasmids.fasta"
+
+   script:
+   """
+   cat *.tsv | cut -f1 > contigs_list.txt
+
+   awk '/^>/{print ">Contig-" ++i; next}{print}' ${contigs} > tmp
+
+   makeblastdb -in tmp -dbtype nucl -out blast.db -parse_seqids -hash_index
+   
+   blastdbcmd -db blast.db -dbtype nucl -entry_batch contigs_list.txt -out plasmids.fasta
 
    """
+
+
 }
