@@ -89,3 +89,179 @@ process RetrievePlasmids {
    
    """
 }
+
+process AnnotContigs {
+
+   input:
+   path contigs
+
+   output:
+   path "prots.faa"
+   path "assembly.fa" 
+
+   script:
+   """
+   
+   awk '/^>/{print ">contig-" ++i; next}{print}' ${contigs} > assembly.fa 
+
+   prodigal -a prots.faa -i assembly.fa
+  
+   """
+}
+
+process RepSearch {
+
+   input:
+   path "prots.faa"
+   path "assembly.fa" 
+
+   output:
+   path "ProtsvsRep.tsv"
+
+   script:
+   """
+
+   hmmsearch --cut_ga -o log --domtblout ProtsvsRep.tsv $baseDir/data/All_Rep.hmm prots.faa 
+   
+
+   """
+}
+
+process DomainArch {
+
+  input:
+  path "ProtvsRep.tsv"
+
+  output:
+  path "Domain_Architecture.RDS"
+  path "multi_dom_RIP.tsv"
+  path "single_dom_RIP.tsv"
+
+  script:
+  """
+
+  Rscript $baseDir/bin/Dom_Arch.R ProtvsRep.tsv
+
+  """
+
+} 
+
+process IncSearch {
+
+  input:
+  path "prots.faa"
+  path "assembly.fa"
+
+  output:
+  path "Inc_candidates.tsv"
+
+  script:
+  """
+  hmmsearch -o log --domtblout Inc_candidates.tsv $baseDir/data/All_Inc.hmm prots.faa 
+
+  """
+
+}
+
+process RnaSearch {
+
+  input: 
+  path "prots.faa"
+  path "assembly.fa"
+
+  output:
+  path "RNA_candidates.tsv"
+
+  script:
+  """
+
+  cmsearch --tblout RNA_candidates.tsv $baseDir/data/All_RNA_Inc.hmm assembly.fa 
+  
+  """
+}
+
+process IncClassif {
+
+  input: 
+  path "Inc_candidates.tsv"
+  path "RNA_candidates.tsv"
+
+  output:
+  path "Classification_table.tsv"
+
+  script:
+  """
+
+  Rscript $baseDir/bin/Inc_classification.R Inc_candidates.tsv RNA_candidates.tsv 
+  
+  """
+}
+
+process IncFilter {
+
+  input: 
+  path "Classification_table.tsv"
+
+  output:
+  path "Filtered_Classif.tsv"
+
+  script:
+  """
+
+  Rscript $baseDir/bin/Filter_classification.R Classification_table.tsv 
+  
+  """
+}
+
+process MobSearch {
+
+  input:
+  path "prots.faa"
+  path "assembly.fa"
+
+  output:
+  path "Mob_candidates.tsv"
+
+  script:
+  """
+  hmmsearch -o log --domtblout Mob_candidates.tsv $baseDir/data/All_MOB.hmm prots.faa 
+
+  """
+
+}
+
+process MobFilter {
+
+  input: 
+  path "Mob_candidates.tsv"
+
+  output:
+  path "Mob_table.tsv"
+
+  script:
+  """
+
+  Rscript $baseDir/bin/Filter_Mob.R Mob_candidates.tsv 
+  
+  """
+}
+
+process GeneRetrieve {
+  
+  input:
+  path "Filtered_classif.tsv"
+  path "Mob_table.tsv"
+  path "prots.faa"
+  path "assembly.fa"
+
+  output:
+  path "Plasmids_contigs.fasta"
+  path "Plasmid_Report.tsv"
+
+  script:
+  """
+  Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Mob_table.tsv assembly.fa
+
+  """
+
+}

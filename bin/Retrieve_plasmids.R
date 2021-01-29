@@ -5,9 +5,6 @@ args = commandArgs(trailingOnly=TRUE)
 tab = args[1]         # Input paf table
 fst = args[2]         # Input fasta file
 
-
-
-
  library(readr)
  library(Biostrings)
  library(dplyr)
