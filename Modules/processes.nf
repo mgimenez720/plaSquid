@@ -133,14 +133,34 @@ process DomainArch {
   path "ProtvsRep.tsv"
 
   output:
-  path "Domain_Architecture.RDS"
   path "multi_dom_RIP.tsv"
   path "single_dom_RIP.tsv"
+  path "Domain_Architecture.RDS"
 
   script:
   """
 
   Rscript $baseDir/bin/Dom_Arch.R ProtvsRep.tsv
+
+  """
+
+} 
+
+process FilterDom {
+
+  input:
+  path "multi_dom_RIP.tsv"
+  path "single_dom_RIP.tsv"
+  path "Domain_Architecture.RDS"
+  
+
+  output:
+  path "Rep_domains.tsv"
+
+  script:
+  """
+
+  Rscript $baseDir/bin/Filter_RIP.R multi_dom_RIP.tsv single_dom_RIP.tsv Domain_Architecture.RDS $baseDir/data/Arq_RIP_new.RDS
 
   """
 
@@ -251,6 +271,7 @@ process GeneRetrieve {
   input:
   path "Filtered_classif.tsv"
   path "Mob_table.tsv"
+  path "Rep_domains.tsv"
   path "prots.faa"
   path "assembly.fa"
 
@@ -260,7 +281,7 @@ process GeneRetrieve {
 
   script:
   """
-  Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Mob_table.tsv assembly.fa
+  Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 
   """
 
