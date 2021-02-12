@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-nextflow.preview.dsl = 2
+nextflow.enable.dsl = 2
 
 
 params.contigs = "*.fasta"
@@ -11,6 +11,50 @@ include { Parse_paf } from "./Modules/processes.nf"
 include { ConcTab } from "./Modules/processes.nf"
 include { RetrievePlasmids } from "./Modules/processes.nf"
 
+
+def sayHi(){
+  log.info '''
+            __       _____                _      __
+    ____   / /____ _/ ___/ ____ _ __  __ (_)____/ /
+   / __   / // __ `/ '_   / __ `// / / // // __  /
+  / /_/ // // /_/ /___/ // /_/ // /_/ // // /_/ /  
+ / .___//_/ '__,_//____/  __, / '__,_//_/ ' __,_/  
+/_/                        /_/                    
+--------------------------------------------------
+-A pipeline for Plasmids Sequences Identification-
+--------------------------------------------------
+'''
+}
+
+sayHi()
+
+def helpMessage() {
+    log.info """
+    Usage:
+    
+    nextflow run plaSquid.nf --contigs 'data/*.fasta' 
+    
+    Mandatory arguments:
+    
+    --contigs                Path to input data (must be surrounded with quotes).
+    
+    Workflows:
+    
+    --Minidist
+    --RIPSearch
+
+    Authors:
+    
+    Matías Giménez
+    Ignacio Ferrés
+    Gregorio Iraola
+
+
+Microbial Genomics Laboratory
+Institut Pasteur Montevideo (Uruguay)
+
+ """.stripIndent()
+}
 
 workflow {
 

@@ -44,13 +44,14 @@ process Parse_paf {
     input:
     tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
     
+
     output:
     file "*.tsv"
 
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R ${contig_id}.paf ${contig_id}.fst
+    Rscript $baseDir/bin/Parse_paf.R ${contig_id}.paf ${contig_id}.fst $baseDir/data/plsdb_table.RDS
 
     """
 }
@@ -281,8 +282,47 @@ process GeneRetrieve {
 
   script:
   """
+  
   Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 
   """
+
+}
+
+process DownPLSDB {
+ 
+  output:
+  path "plsdb.fna"
+  
+  script:
+  """
+  
+  wget -O plsdb https://ndownloader.figshare.com/files/23582252
+  unzip plsdb
+  rm PLSDB_2020_06_29/plsdb.msh PLSDB_2020_06_29/plsdb.tsv PLSDB_2020_06_29/plsdb.abr
+  blastdbcmd -dbtype nucl -db PLSDB_2020_06_29/plsdb.fna -entry all -out plsdb.fna
+    
+  """
+
+}
+
+process FormtPLSDB {
+  
+  input:
+  path "plsdb.fna"
+
+  output:
+  path "plsdb.mmi"
+
+  script:
+  """
+  
+  minimap2 -d plsdb.mmi plsdb.fna 
+  
+  """
+
+  
+
+
 
 }
