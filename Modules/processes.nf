@@ -20,6 +20,7 @@ process Mapping_pr {
 
     input:
     tuple val(contig_id), file("${contig_id}.fst")
+    path "plsdb.mmi"
 
     output: 
     tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
@@ -29,7 +30,7 @@ process Mapping_pr {
     
     minimap2 \
     -x asm5 \
-    /mnt/4tb/home/mgimenez/Matias/Metagenomas/databases/plsdb_2020.mmi \
+    plsdb.mmi \
     ${contig_id}.fst \
     > ${contig_id}.paf
 
@@ -82,7 +83,7 @@ process RetrievePlasmids {
    
    output:
    path "Minidist_result.tsv"
-   path "Minidist_contigs.fasta"
+   
 
    script:
    """
@@ -91,19 +92,32 @@ process RetrievePlasmids {
    """
 }
 
-process AnnotContigs {
+process Renamecntgs {
 
    input:
    path contigs
-
+   
    output:
-   path "prots.faa"
-   path "assembly.fa" 
+   path "assembly.fa"
 
    script:
    """
    
    awk '/^>/{print ">contig-" ++i; next}{print}' ${contigs} > assembly.fa 
+   
+   """
+}
+
+process AnnotContigs {
+
+   input:
+   path "assembly.fa"
+
+   output:
+   path "prots.faa"
+
+   script:
+   """
 
    prodigal -a prots.faa -i assembly.fa
   
@@ -113,8 +127,7 @@ process AnnotContigs {
 process RepSearch {
 
    input:
-   path "prots.faa"
-   path "assembly.fa" 
+   path "prots.faa" 
 
    output:
    path "ProtsvsRep.tsv"
@@ -171,7 +184,6 @@ process IncSearch {
 
   input:
   path "prots.faa"
-  path "assembly.fa"
 
   output:
   path "Inc_candidates.tsv"
@@ -187,7 +199,6 @@ process IncSearch {
 process RnaSearch {
 
   input: 
-  path "prots.faa"
   path "assembly.fa"
 
   output:
@@ -238,7 +249,6 @@ process MobSearch {
 
   input:
   path "prots.faa"
-  path "assembly.fa"
 
   output:
   path "Mob_candidates.tsv"
@@ -273,7 +283,6 @@ process GeneRetrieve {
   path "Filtered_classif.tsv"
   path "Mob_table.tsv"
   path "Rep_domains.tsv"
-  path "prots.faa"
   path "assembly.fa"
 
   output:
@@ -285,6 +294,25 @@ process GeneRetrieve {
   
   Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 
+  """
+
+}
+process SumOutput {
+  
+  input:
+  path "Minidist_result.tsv"
+  path "Plasmid_Report.tsv"
+  path contigs
+
+  output:
+  path "Result.fasta"
+  path "Result.tsv"
+
+  script:
+  """
+  
+  Rscript $baseDir/bin/sum.info.R Minidist_result.tsv Plasmid_Report.tsv ${contigs} 
+  
   """
 
 }
@@ -318,11 +346,7 @@ process FormtPLSDB {
   """
   
   minimap2 -d plsdb.mmi plsdb.fna 
+  cp plsdb.mmi $baseDir/plsdb.mmi
   
   """
-
-  
-
-
-
 }
