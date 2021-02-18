@@ -20,6 +20,7 @@ process Mapping_pr {
 
     input:
     tuple val(contig_id), file("${contig_id}.fst")
+    path "plsdb.mmi"
 
     output: 
     tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
@@ -29,7 +30,7 @@ process Mapping_pr {
     
     minimap2 \
     -x asm5 \
-    /mnt/4tb/home/mgimenez/Matias/Metagenomas/databases/plsdb_2020.mmi \
+    plsdb.mmi \
     ${contig_id}.fst \
     > ${contig_id}.paf
 
@@ -44,13 +45,14 @@ process Parse_paf {
     input:
     tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
     
+
     output:
     file "*.tsv"
 
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R ${contig_id}.paf ${contig_id}.fst
+    Rscript $baseDir/bin/Parse_paf.R ${contig_id}.paf ${contig_id}.fst $baseDir/data/plsdb_table.RDS
 
     """
 }
@@ -81,7 +83,7 @@ process RetrievePlasmids {
    
    output:
    path "Minidist_result.tsv"
-   path "Minidist_contigs.fasta"
+   
 
    script:
    """
@@ -90,19 +92,32 @@ process RetrievePlasmids {
    """
 }
 
-process AnnotContigs {
+process Renamecntgs {
 
    input:
    path contigs
-
+   
    output:
-   path "prots.faa"
-   path "assembly.fa" 
+   path "assembly.fa"
 
    script:
    """
    
    awk '/^>/{print ">contig-" ++i; next}{print}' ${contigs} > assembly.fa 
+   
+   """
+}
+
+process AnnotContigs {
+
+   input:
+   path "assembly.fa"
+
+   output:
+   path "prots.faa"
+
+   script:
+   """
 
    prodigal -a prots.faa -i assembly.fa
   
@@ -112,8 +127,7 @@ process AnnotContigs {
 process RepSearch {
 
    input:
-   path "prots.faa"
-   path "assembly.fa" 
+   path "prots.faa" 
 
    output:
    path "ProtsvsRep.tsv"
@@ -170,7 +184,6 @@ process IncSearch {
 
   input:
   path "prots.faa"
-  path "assembly.fa"
 
   output:
   path "Inc_candidates.tsv"
@@ -186,7 +199,6 @@ process IncSearch {
 process RnaSearch {
 
   input: 
-  path "prots.faa"
   path "assembly.fa"
 
   output:
@@ -237,7 +249,6 @@ process MobSearch {
 
   input:
   path "prots.faa"
-  path "assembly.fa"
 
   output:
   path "Mob_candidates.tsv"
@@ -272,7 +283,6 @@ process GeneRetrieve {
   path "Filtered_classif.tsv"
   path "Mob_table.tsv"
   path "Rep_domains.tsv"
-  path "prots.faa"
   path "assembly.fa"
 
   output:
@@ -281,8 +291,62 @@ process GeneRetrieve {
 
   script:
   """
+  
   Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 
   """
 
+}
+process SumOutput {
+  
+  input:
+  path "Minidist_result.tsv"
+  path "Plasmid_Report.tsv"
+  path contigs
+
+  output:
+  path "Result.fasta"
+  path "Result.tsv"
+
+  script:
+  """
+  
+  Rscript $baseDir/bin/sum.info.R Minidist_result.tsv Plasmid_Report.tsv ${contigs} 
+  
+  """
+
+}
+
+process DownPLSDB {
+ 
+  output:
+  path "plsdb.fna"
+  
+  script:
+  """
+  
+  wget -O plsdb https://ndownloader.figshare.com/files/23582252
+  unzip plsdb
+  rm PLSDB_2020_06_29/plsdb.msh PLSDB_2020_06_29/plsdb.tsv PLSDB_2020_06_29/plsdb.abr
+  blastdbcmd -dbtype nucl -db PLSDB_2020_06_29/plsdb.fna -entry all -out plsdb.fna
+    
+  """
+
+}
+
+process FormtPLSDB {
+  
+  input:
+  path "plsdb.fna"
+
+  output:
+  path "plsdb.mmi"
+
+  script:
+  """
+  
+  minimap2 -d plsdb.mmi plsdb.fna 
+  cp plsdb.mmi $baseDir/plsdb.mmi
+  
+  """
 }

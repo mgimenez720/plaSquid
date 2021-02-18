@@ -4,6 +4,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 paf = args[1]         # Input paf table
 fst = args[2]         # Input fasta file
+rds = args[3]         # Plsdb length and names
 
 library(tidyverse)
 library(Biostrings)
@@ -66,7 +67,7 @@ sim       <- mean(mean.vect)
 
 #collecting data of matching plasmid
 
-plsdb_table <- readRDS("/mnt/4tb/home/mgimenez/Matias/Metagenomas/nf_plaSquid/Workshop/data/plsdb_table.RDS")
+plsdb_table <- readRDS(rds)
 plsdb_names <- plsdb_table$plasmid_name
 plsdb_len   <- plsdb_table$plasmid_length
 
@@ -85,16 +86,22 @@ df <- tibble('Contig_name' = character(),'S-distance' = numeric(), 'Ref_name' = 
 dat <- c(cns, sim, psn, pll)
 
 
-
  if (sim >= 45) {
      
-      df[1,] <- dat
+     df[1,1]   <- cns
+     df[1,2]   <- sim
+     df[1,3]   <- psn
+     df[1,4]   <- pll
      
-      write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE)
+     write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE)
 
  } else {
    
-      df[1,] <- c(cns, sim, NA, NA)
+      
+      df[1,1]   <- cns
+      df[1,2]   <- sim
+      df[1,3]   <- NA
+      df[1,4]   <- NA
    
       write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE) 
    
