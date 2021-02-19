@@ -6,6 +6,7 @@ nextflow.enable.dsl = 2
 params.contigs = "*.fasta"
 params.plsdbURL = "https://ndownloader.figshare.com/files/23582252"
 params.mmi = "plsdb.mmi"
+params.outdir = "Results"
 
 params.minidist = false
 params.repsearch = false
@@ -49,7 +50,7 @@ def helpMessage() {
     
     --contigs     Path to input data (must be surrounded with quotes).
     --mmi         Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database-
-    --result      Name of the output files (.fasta and .tsv) to be written.
+    --outdir      Path to output directory where results are written.
 
     --help        Print help message and exit 
 
