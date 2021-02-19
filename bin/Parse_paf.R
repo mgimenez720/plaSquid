@@ -10,6 +10,8 @@ library(tidyverse)
 library(Biostrings)
 library(readr)
 
+if(file.size(paf) > 0) {
+  
 tab.all <- read.csv(paf,sep='\t',header=F)
 
 colnames(tab.all) <- c('qid','qlen','qst','qend','strand','sid','slen','sst','send','match','len','qual')
@@ -107,4 +109,15 @@ dat <- c(cns, sim, psn, pll)
    
  }
 
-
+} else {
+  
+  df <- tibble('Contig_name' = character(),'S-distance' = numeric(), 'Ref_name' = character(), 'Ref_length' = numeric())
+  
+  df[1,1]   <- cns
+  df[1,2]   <- sim
+  df[1,3]   <- NA
+  df[1,4]   <- NA
+  
+  write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE) 
+  
+}

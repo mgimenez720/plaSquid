@@ -346,6 +346,8 @@ process SumOutput {
 label 'small_mem'
 label 'big_cpus'
 
+publishDir "$params.outdir/", mode: "copy"
+
   input:
   path "Minidist_result.tsv"
   path "Plasmid_Report.tsv"
