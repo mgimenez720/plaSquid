@@ -1,6 +1,9 @@
 #!/usr/bin/env nextflow
    
 process Splitter {
+
+  label 'big_mem'
+  label 'big_cpus'
     
     input:
     path contigs
@@ -16,6 +19,10 @@ process Splitter {
 
 
 process Mapping_pr {
+    
+    label 'big_mem'
+    label 'big_cpus'
+
     tag "$contig_id"
 
     input:
@@ -32,6 +39,7 @@ process Mapping_pr {
     -x asm5 \
     plsdb.mmi \
     ${contig_id}.fst \
+    -t ${task.cpus} \
     > ${contig_id}.paf
 
     
@@ -40,6 +48,10 @@ process Mapping_pr {
 }
 
 process Parse_paf {
+    label 'small_mem'
+    label 'small_cpus'
+
+    
     tag "$contig_id"
     
     input:
@@ -59,7 +71,9 @@ process Parse_paf {
 
 
 process ConcTab {
-
+  label 'small_mem'
+  label 'small_cpus'
+   
    input:
    path "*.tsv"   
 
@@ -76,7 +90,9 @@ process ConcTab {
 }
 
 process RetrievePlasmids {
-
+  label 'small_mem'
+  label 'small_cpus'
+  
    input:
    path "temp.tsv"
    path contigs
@@ -93,6 +109,8 @@ process RetrievePlasmids {
 }
 
 process Renamecntgs {
+  label 'big_mem'
+  label 'small_cpus'
 
    input:
    path contigs
@@ -109,6 +127,8 @@ process Renamecntgs {
 }
 
 process AnnotContigs {
+label 'big_mem'
+label 'big_cpus'  
 
    input:
    path "assembly.fa"
@@ -125,6 +145,8 @@ process AnnotContigs {
 }
 
 process RepSearch {
+label 'big_mem'
+label 'big_cpus'
 
    input:
    path "prots.faa" 
@@ -142,6 +164,8 @@ process RepSearch {
 }
 
 process DomainArch {
+label 'small_mem'
+label 'big_cpus'
 
   input:
   path "ProtvsRep.tsv"
@@ -161,6 +185,8 @@ process DomainArch {
 } 
 
 process FilterDom {
+label 'small_mem'
+label 'big_cpus'
 
   input:
   path "multi_dom_RIP.tsv"
@@ -182,6 +208,9 @@ process FilterDom {
 
 process IncSearch {
 
+label 'big_mem'
+label 'big_cpus'
+
   input:
   path "prots.faa"
 
@@ -197,6 +226,8 @@ process IncSearch {
 }
 
 process RnaSearch {
+label 'big_mem'
+label 'big_cpus'
 
   input: 
   path "assembly.fa"
@@ -213,6 +244,9 @@ process RnaSearch {
 }
 
 process IncClassif {
+
+label 'small_mem'
+label 'small_cpus'
 
   input: 
   path "Inc_candidates.tsv"
@@ -231,6 +265,9 @@ process IncClassif {
 
 process IncFilter {
 
+label 'small_mem'
+label 'small_cpus'
+  
   input: 
   path "Classification_table.tsv"
 
@@ -246,6 +283,8 @@ process IncFilter {
 }
 
 process MobSearch {
+label 'big_mem'
+label 'big_cpus'
 
   input:
   path "prots.faa"
@@ -262,6 +301,8 @@ process MobSearch {
 }
 
 process MobFilter {
+label 'small_mem'
+label 'small_cpus'
 
   input: 
   path "Mob_candidates.tsv"
@@ -278,7 +319,10 @@ process MobFilter {
 }
 
 process GeneRetrieve {
-  
+
+label 'big_mem'
+label 'big_cpus'
+
   input:
   path "Filtered_classif.tsv"
   path "Mob_table.tsv"
@@ -298,7 +342,10 @@ process GeneRetrieve {
 
 }
 process SumOutput {
-  
+
+label 'small_mem'
+label 'big_cpus'
+
   input:
   path "Minidist_result.tsv"
   path "Plasmid_Report.tsv"
@@ -318,7 +365,10 @@ process SumOutput {
 }
 
 process DownPLSDB {
- 
+
+label 'big_mem'
+label 'big_cpus'
+
   output:
   path "plsdb.fna"
   
@@ -335,7 +385,9 @@ process DownPLSDB {
 }
 
 process FormtPLSDB {
-  
+label 'big_mem'
+label 'big_cpus'
+
   input:
   path "plsdb.fna"
 
