@@ -12,7 +12,7 @@
  
  #Load data
  
- rps <- read_delim(tbr, delim="\t")
+ rps <- distinct(read_delim(tbr, delim="\t"), .keep_all = TRUE)
  rpd <- na.omit(read_delim(tbd, delim = "\t"))
  mbs <- read_delim(tbm, delim="\t")
  mtg <- readDNAStringSet(asm)
@@ -38,7 +38,7 @@
  
  #Parsing output tables
  
- names(rps) <- c("Rep_ORF", "Rep_type", "Rep_score", "Rep_len", "contig")
+ names(rps) <- c("Rep_ORF", "Rep_len", "Rep_type", "Rep_score", "contig")
  names(mbs) <- c("Mob_ORF", "Mob_len", "MOB_group", "MOB_score", "alifrom", "alito", "contig")
  names(rpd) <- c("Rep_type", "contig", "Rep_ORF")
  
@@ -74,7 +74,7 @@
  
  ftb1$contig_length <- len
  
- ftb2 <- ftb1[,c(c(1,3,8,12,14))]
+ ftb2 <- ftb1[,c(c("contig","Rep_type.x","MOB_group","Rep_type.y","contig_length"))]
  colnames(ftb2)<- c("Contig", "Inc_group", "MOB_group", "RIP_domain", "contig_length")
  
  #Writing final results
