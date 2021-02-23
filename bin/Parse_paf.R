@@ -113,11 +113,11 @@ dat <- c(cns, sim, psn, pll)
   
   df <- tibble('Contig_name' = character(),'S-distance' = numeric(), 'Ref_name' = character(), 'Ref_length' = numeric())
   
-  df[1,1]   <- cns
-  df[1,2]   <- sim
+  df[1,1]   <- NA
+  df[1,2]   <- NA
   df[1,3]   <- NA
   df[1,4]   <- NA
   
-  write_delim(df, delim = "\t", path = paste0(cns,".tsv"), col_names = FALSE) 
+  write_delim(df, delim = "\t", path = paste0("chr.tsv"), col_names = FALSE) 
   
 }

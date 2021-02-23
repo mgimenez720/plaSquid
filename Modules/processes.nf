@@ -82,8 +82,11 @@ process ConcTab {
 
    script:
    """
-   cat *.tsv > temp.tsv
-
+  if [ -f chr.tsv ]; then
+    rm chr.tsv
+  else 
+    cat *.tsv > temp.tsv
+  fi
    """
     
    

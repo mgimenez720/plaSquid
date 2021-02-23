@@ -29,13 +29,18 @@
      tns <- tibble(names = nfs,
                    Contig = cnts)
 
-  rtb <-  full_join(tns, tbr, by = "Contig")
+  rtb <-  inner_join(tns, tbr, by = "Contig")
   names(rtb) <- c("Contig", "names", "Rep_type", "MOB_group", "RIP_domain", "Contig_length")
+  
+  
   names(tbm) <- c("Contig","Sim_dist","plsdb_match","Match_length","Contig_length")
+  ltb <-  inner_join(tns, tbm, by = c("names" = "Contig"))
 
-  ftb <- full_join(tbm, rtb, by = c("Contig", "Contig_length"))
 
-  ftb1 <- ftb[,c(1,2,3,4,5,7,8,9)]
+  ftb <- full_join(ltb, rtb, by = c("Contig"))
+
+  ftb1 <- ftb[,c("names.x","Contig","Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "contig_length")]
+  names(ftb1) <- c("Contig", "name", "Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "Contig_length")
 
 
    hts <- ftb1$Contig
