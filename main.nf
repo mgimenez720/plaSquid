@@ -28,7 +28,7 @@ def sayHi(){
   log.info '''
 .           __       _____                _      __
     ____   / /____  / ___/ ____ _ __  __ (_)____/ /
-   / __ ` / // __ `/ `_   / __ `// / / // // __  /
+   / __ ` / // __ `/ /_   / __ `// / / // // __  /
   / /_/ // // /_/ /___/ // /_/ // /_/ // // /_/ /  
  / .___//_/ '__,_//____/ `__  / '__,_//_/ ' __,_/  
 /_/                        /_/                    
@@ -48,16 +48,23 @@ def helpMessage() {
     
     arguments:
     
-    --contigs     Path to input data (must be surrounded with quotes).
-    --mmi         Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database-
-    --outdir      Path to output directory where results are written.
+    --contigs       Path to input data (must be surrounded with quotes).
+    --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database-
+    --outdir        Path to output directory where results are written.
 
-    --help        Print help message and exit 
+    --help          Print help message and exit 
 
     subworkflows:
     
-    --minidist    Run mapping of contigs against plsdb database. 
-    --repsearch   Run search and classification of RIP and MOB (Rel) genes.
+    --minidist      Run mapping of contigs against plsdb database. 
+    --repsearch     Run search and classification of RIP and MOB (Rel) genes.
+    
+    profiles:
+    
+    -profile conda  Installs dependencies using a conda environment
+    -profile server runs using 15 cpus and 50 Gb
+    -profile test   tests dependencies and normal functioning
+
 
     Authors:
     

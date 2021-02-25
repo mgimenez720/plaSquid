@@ -17,29 +17,18 @@ plsdbmmi = file( params.mmi )
 if ( plsdbmmi.exists() ) {
 
 Channel.value( plsdbmmi )
-          .set{ FmtPlsdb_ch }
+       .set{ FmtPlsdb_ch }
 
 } else {
 
+         DownPLSDB()
+         DownPLSDB.out
+                  .set{ plsdb_ch }
+      
+        FormtPLSDB( plsdb_ch )
+        FormtPLSDB.out
+                  .set{ FmtPlsdb_ch }
 
-if ( plsdbmmi.getExtension() == "fasta" || "fna" ) {
-
-   Channel.value( plsdbmmi )
-          .set{ plsdb_ch }
-
-   FormtPLSDB( plsdb_ch )
-   FormtPLSDB.out
-        .set{ FmtPlsdb_ch }
-
- } else {
-
- DownPLSDB()
- DownPLSDB.out
-          .set{ plsdb_ch }
- FormtPLSDB( plsdb_ch )
- FormtPLSDB.out
-        .set{ FmtPlsdb_ch }
- }
 }
 
 
