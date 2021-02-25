@@ -9,11 +9,13 @@ process Splitter {
     path contigs
      
     output:
-    file "Contig*"
+    path "plasmid.split"
 
     script:         
     """
-    Rscript $baseDir/bin/script1.R ${contigs}
+    
+    Rscript $baseDir/bin/splitter.R ${contigs}
+    
     """
 }
 
@@ -23,14 +25,12 @@ process Mapping_pr {
     label 'big_mem'
     label 'big_cpus'
 
-    tag "$contig_id"
-
     input:
-    tuple val(contig_id), file("${contig_id}.fst")
+    path "plasmid.split"
     path "plsdb.mmi"
 
     output: 
-    tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
+    path "plasmid.split.paf"
 
     script:
     """
@@ -38,11 +38,10 @@ process Mapping_pr {
     minimap2 \
     -x asm5 \
     plsdb.mmi \
-    ${contig_id}.fst \
+    plasmid.split \
     -t ${task.cpus} \
-    > ${contig_id}.paf
+    > plasmid.split.paf
 
-    
     """
 
 }
@@ -55,42 +54,22 @@ process Parse_paf {
     tag "$contig_id"
     
     input:
-    tuple val(contig_id), file("${contig_id}.fst"), file("${contig_id}.paf")
-    
+    path "plasmid.split.paf"
+    path contigs
 
     output:
-    file "*.tsv"
+    path "Minidist_result.tsv"
 
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R ${contig_id}.paf ${contig_id}.fst $baseDir/data/plsdb_table.RDS
+    Rscript $baseDir/bin/Parse_paf.R plasmid.split.paf ${contigs} $baseDir/data/plsdb_table.RDS
 
     """
 }
 
 
-process ConcTab {
-  label 'small_mem'
-  label 'small_cpus'
-   
-   input:
-   path "*.tsv"   
 
-   output:
-   path "temp.tsv"
-
-   script:
-   """
-  if [ -f chr.tsv ]; then
-    rm chr.tsv
-  else 
-    cat *.tsv > temp.tsv
-  fi
-   """
-    
-   
-}
 
 process RetrievePlasmids {
   label 'small_mem'
@@ -404,6 +383,6 @@ label 'big_cpus'
   
   minimap2 -d plsdb.mmi plsdb.fna 
   cp plsdb.mmi $baseDir/plsdb.mmi
-  
+
   """
 }

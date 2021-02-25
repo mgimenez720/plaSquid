@@ -7,7 +7,7 @@
    library(Biostrings)
 
   mbt = args[1] #Minidist_result.tsv
-  rbt = args[2] #Plasmid_report.tsv
+  rbt = args[2] #Plasmid_Report.tsv
   fsn = args[3] #test.fasta
 
    
@@ -34,20 +34,27 @@
   
   
   names(tbm) <- c("Contig","Sim_dist","plsdb_match","Match_length","Contig_length")
-  ltb <-  inner_join(tns, tbm, by = c("names" = "Contig"))
+  ltb <-  inner_join (tbm, tns, by = c("Contig" = "names"))
 
 
   ftb <- full_join(ltb, rtb, by = c("Contig"))
 
-  ftb1 <- ftb[,c("names.x","Contig","Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "contig_length")]
-  names(ftb1) <- c("Contig", "name", "Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "Contig_length")
+  ftb1 <- ftb[,c("names","Contig","Sim_dist","plsdb_match","Match_length","Rep_type", "MOB_group", "RIP_domain", "Contig_length.y")]
+  
+  ftb2 <- full_join(ftb1, tns, by= c("Contig" = "names"))
+  
+  ftb3 <- ftb2[,c("Contig.y","Contig","Sim_dist","plsdb_match","Match_length","Rep_type", "MOB_group", "RIP_domain", "Contig_length.y")]
+  
+  names(ftb3) <- c("Contig", "name", "Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "Contig_length")
 
 
-   hts <- ftb1$Contig
+  ftb4 <- subset.data.frame(ftb3, subset = ftb3$Sim_dist>45 | ftb3$Inc_group != "NA" | ftb3$MOB_group != "NA" | ftb3$RIP_domain != "NA")
+  
+   hts <- ftb4$name
    idx <- which(hts %in% nfs)
    fst1 <- fst[idx]
 
    writeXStringSet(fst1, "Result.fasta")
-   write_delim(ftb1,"Result.tsv", delim= "\t")
+   write_delim(ftb4,"Result.tsv", delim= "\t")
 
 
