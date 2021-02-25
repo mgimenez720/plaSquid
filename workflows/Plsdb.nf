@@ -3,7 +3,7 @@
 nextflow.enable.dsl = 2
 
 params.plsdbURL = "https://ndownloader.figshare.com/files/23582252"
-params.mmi = "plsdb.mmi"
+params.mmi = "$baseDir/plsdb.mmi"
 
 include {DownPLSDB} from '../Modules/processes.nf'
 include {FormtPLSDB} from '../Modules/processes.nf'
@@ -14,30 +14,33 @@ main:
 
 plsdbmmi = file( params.mmi )
 
-if ( ! plsdbmmi.exists() ) {
+if ( plsdbmmi.exists() ) {
+
+Channel.value( plsdbmmi )
+          .set{ FmtPlsdb_ch }
+
+} else {
+
+
+if ( plsdbmmi.getExtension() == "fasta" || "fna" ) {
+
+   Channel.value( plsdbmmi )
+          .set{ plsdb_ch }
+
+   FormtPLSDB( plsdb_ch )
+   FormtPLSDB.out
+        .set{ FmtPlsdb_ch }
+
+ } else {
 
  DownPLSDB()
  DownPLSDB.out
           .set{ plsdb_ch }
-
-} else {
-
- if ( plsdbmmi.getExtension() == "fasta" || "fna" ) {
-
-   Channel.value( plsdbmmi )
-          .set{ plsdb_ch }
- } else {
-
-  println("Unrecognized plsdb extension (not .fasta nor .fna).")
-  system.exit(1)
-
- }
-
-} 
-
-FormtPLSDB( plsdb_ch )
-FormtPLSDB.out
+ FormtPLSDB( plsdb_ch )
+ FormtPLSDB.out
         .set{ FmtPlsdb_ch }
+ }
+}
 
 
 emit:
