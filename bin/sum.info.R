@@ -51,7 +51,7 @@
   ftb4 <- subset.data.frame(ftb3, subset = ftb3$Sim_dist>45 | ftb3$Inc_group != "NA" | ftb3$MOB_group != "NA" | ftb3$RIP_domain != "NA")
   
    hts <- ftb4$name
-   idx <- which(hts %in% nfs)
+   idx <- which(nfs %in% hts)
    fst1 <- fst[idx]
 
    writeXStringSet(fst1, "Result.fasta")

@@ -42,18 +42,22 @@ hdl <- tibble("Inc_det" = character(0),
    
  }
  
-  cnt <- character(0)
+
+  if (nrow(hdl) > 0) {
+  
+   cnt <- character(0)
  
-  for (i in 1:length(hdl$Inc_det)){
+   for (i in 1:length(hdl$Inc_det)){
     
     ri <- hdl$Inc_det[i]
     
     rc <- strsplit(ri, split = "_")[[1]][1]
     
     cnt <- c(cnt, rc)
-  }
+   }
 
-  hdl$contig <- cnt
+   hdl$contig <- cnt
+ }
 
 # Threshold specific filtering of RNA incompatibility determinants
 
@@ -79,7 +83,7 @@ cm1 <- as_tibble(read.table(cmt, header=FALSE, sep = "", comment.char = '#',
                "score" = numeric(0))
  
 
- for (i in 1:length(cmm)) {
+  for (i in 1:length(cmm)) {
    
    
    cmi <- cmm[i]
