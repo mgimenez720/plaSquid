@@ -77,11 +77,11 @@ for (x in 1:l) {
   
   write.fasta(spl, names = names(spl), file.out=fout)
   
-  cmnd <- paste("cat", fout, ">> plasmid.split", sep = " ")
-  system(cmnd)
+  #cmnd <- paste("cat", fout, ">> plasmid.split", sep = " ")
+  #system(cmnd)
   
-  rmr <- paste("rm -r ", fout, sep="")
-  system(rmr, ignore.stdout = TRUE)
+  #rmr <- paste("rm -r ", fout, sep="")
+  #system(rmr, ignore.stdout = TRUE)
 }
 
 

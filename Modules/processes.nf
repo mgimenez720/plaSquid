@@ -6,15 +6,15 @@ process Splitter {
   label 'big_cpus'
     
     input:
-    path contigs
+    path "spl_contigs"
      
     output:
-    path "plasmid.split"
+    path "*.fasta"
 
     script:         
     """
     
-    Rscript $baseDir/bin/splitter.R ${contigs}
+    Rscript $baseDir/bin/splitter.R spl_contigs
     
     """
 }

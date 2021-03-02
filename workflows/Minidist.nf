@@ -16,10 +16,15 @@ dbs_ch
 
 main:
 
-Splitter(fasta_ch)
+      
+       fasta_ch.splitFasta(file:'spl_contigs' )
+       .set{ cntgs_splt_ch }
+
+Splitter( cntgs_splt_ch )
    
-   Splitter.out
-           .set{ fasta_spl_ch }
+Splitter.out
+        .collectFile(name: 'plasmid.split', newLine: true)
+        .set{ fasta_spl_ch }
 
 Mapping_pr(fasta_spl_ch, dbs_ch)
 
