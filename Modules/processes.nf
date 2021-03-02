@@ -90,6 +90,29 @@ process RetrievePlasmids {
    """
 }
 
+process Minidist_output {
+  
+  label 'small cpus'
+
+  input:
+  path "Minidist_result.tsv"
+  path contigs
+
+  output:
+  path "Minidist_plasmids.fasta"
+  path "Minidist_result.tsv"
+  
+  script:
+  """
+  /usr/bin/env Rscript
+
+  read_delim("Minidist_reuslt.tsv")  
+  
+
+  """
+
+}
+
 process Renamecntgs {
   label 'big_mem'
   label 'small_cpus'
@@ -139,7 +162,7 @@ label 'big_cpus'
    script:
    """
 
-   hmmsearch --cut_ga -o log --domtblout ProtsvsRep.tsv $baseDir/data/All_Rep.hmm prots.faa 
+   hmmsearch --cut_ga --cpu ${task.cpus} -o log --domtblout ProtsvsRep.tsv $baseDir/data/All_Rep.hmm prots.faa 
    
 
    """
@@ -201,7 +224,7 @@ label 'big_cpus'
 
   script:
   """
-  hmmsearch -o log --domtblout Inc_candidates.tsv $baseDir/data/All_Inc.hmm prots.faa 
+  hmmsearch -o log --cpu ${task.cpus} --domtblout Inc_candidates.tsv $baseDir/data/All_Inc.hmm prots.faa 
 
   """
 
@@ -220,7 +243,7 @@ label 'big_cpus'
   script:
   """
 
-  cmsearch --tblout RNA_candidates.tsv $baseDir/data/All_RNA_Inc.hmm assembly.fa 
+  cmsearch --cpu ${task.cpus} --tblout RNA_candidates.tsv $baseDir/data/All_RNA_Inc.hmm assembly.fa 
   
   """
 }
@@ -276,7 +299,7 @@ label 'big_cpus'
 
   script:
   """
-  hmmsearch -o log --domtblout Mob_candidates.tsv $baseDir/data/All_MOB.hmm prots.faa 
+  hmmsearch -o log --cpu ${task.cpus} --domtblout Mob_candidates.tsv $baseDir/data/All_MOB.hmm prots.faa 
 
   """
 
