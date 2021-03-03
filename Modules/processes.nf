@@ -9,7 +9,7 @@ process Splitter {
     path "spl_contigs"
      
     output:
-    path "*.fasta"
+    path "plasmid.split"
 
     script:         
     """
@@ -26,7 +26,7 @@ process Mapping_pr {
     label 'big_cpus'
 
     input:
-    path "plasmid.split"
+    path "plasmid.split.final"
     path "plsdb.mmi"
 
     output: 
@@ -38,7 +38,7 @@ process Mapping_pr {
     minimap2 \
     -x asm5 \
     plsdb.mmi \
-    plasmid.split \
+    plasmid.split.final \
     -t ${task.cpus} \
     > plasmid.split.paf
 
