@@ -68,9 +68,6 @@ process Parse_paf {
     """
 }
 
-
-
-
 process RetrievePlasmids {
   label 'small_mem'
   label 'small_cpus'
@@ -90,24 +87,24 @@ process RetrievePlasmids {
    """
 }
 
-process Minidist_output {
+process MinidistOut {
   
-  label 'small cpus'
+  label 'small_cpus'
+
+  publishDir "$params.outdir/", mode: "copy"
 
   input:
   path "Minidist_result.tsv"
   path contigs
 
   output:
-  path "Minidist_plasmids.fasta"
-  path "Minidist_result.tsv"
+  path "Result.fasta"
+  path "Result.tsv"
   
   script:
   """
-  /usr/bin/env Rscript
-
-  read_delim("Minidist_reuslt.tsv")  
-  
+ 
+  Rscript $baseDir/bin/sum.minidist.R Minidist_result.tsv ${contigs}
 
   """
 
