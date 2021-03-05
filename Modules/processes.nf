@@ -47,15 +47,15 @@ process Mapping_pr {
 }
 
 process Parse_paf {
-    label 'small_mem'
-    label 'small_cpus'
+    label 'big_mem'
+    label 'big_cpus'
 
-    
     tag "$contig_id"
     
     input:
     path "plasmid.split.paf"
     path contigs
+    path "plasmid.split.final"
 
     output:
     path "Minidist_result.tsv"
@@ -63,7 +63,11 @@ process Parse_paf {
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R plasmid.split.paf ${contigs} $baseDir/data/plsdb_table.RDS
+    Rscript $baseDir/bin/Parse_paf.R \
+    plasmid.split.paf \
+    ${contigs} \
+    plasmid.split.final \
+    $baseDir/data/plsdb_table.RDS
 
     """
 }

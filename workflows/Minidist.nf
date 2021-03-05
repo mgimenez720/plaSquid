@@ -31,7 +31,7 @@ Mapping_pr(fasta_spl_ch, dbs_ch)
 Mapping_pr.out 
           .set{ paf_parse_ch }
 
-Parse_paf(paf_parse_ch, fasta_ch)   
+Parse_paf(paf_parse_ch, fasta_ch, fasta_spl_ch)   
 Parse_paf.out
          .set{minidist_ch}
 
