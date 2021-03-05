@@ -19,10 +19,12 @@ params.help = false
 include { SetPlsdb } from './workflows/Plsdb.nf'
 include { Minidist } from './workflows/Minidist.nf'
 include { RIPsearch } from './workflows/RIPsearch.nf'
-//include { DomSearch } from './workflows/DomSearch.nf'
+
 
 //Include modules
-include { SumOutput } from "./Modules/processes.nf"
+include { SumOutput } from './Modules/processes.nf'
+include { MinidistOut } from './Modules/processes.nf'
+
 
 def sayHi(){
   log.info '''
@@ -105,6 +107,7 @@ if (params.repsearch) {
    Minidist( fasta_ch, dbs_ch )
    Minidist.out
         .set{ minidist_ch }
+   MinidistOut( minidist_ch, fasta_ch )
 
 } else {
 

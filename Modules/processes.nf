@@ -6,7 +6,7 @@ process Splitter {
   label 'big_cpus'
     
     input:
-    path contigs
+    path "spl_contigs"
      
     output:
     path "plasmid.split"
@@ -14,7 +14,7 @@ process Splitter {
     script:         
     """
     
-    Rscript $baseDir/bin/splitter.R ${contigs}
+    Rscript $baseDir/bin/splitter.R spl_contigs
     
     """
 }
@@ -26,7 +26,7 @@ process Mapping_pr {
     label 'big_cpus'
 
     input:
-    path "plasmid.split"
+    path "plasmid.split.final"
     path "plsdb.mmi"
 
     output: 
@@ -38,7 +38,7 @@ process Mapping_pr {
     minimap2 \
     -x asm5 \
     plsdb.mmi \
-    plasmid.split \
+    plasmid.split.final \
     -t ${task.cpus} \
     > plasmid.split.paf
 
@@ -47,15 +47,15 @@ process Mapping_pr {
 }
 
 process Parse_paf {
-    label 'small_mem'
-    label 'small_cpus'
+    label 'big_mem'
+    label 'big_cpus'
 
-    
     tag "$contig_id"
     
     input:
     path "plasmid.split.paf"
     path contigs
+    path "plasmid.split.final"
 
     output:
     path "Minidist_result.tsv"
@@ -63,13 +63,14 @@ process Parse_paf {
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R plasmid.split.paf ${contigs} $baseDir/data/plsdb_table.RDS
+    Rscript $baseDir/bin/Parse_paf.R \
+    plasmid.split.paf \
+    ${contigs} \
+    plasmid.split.final \
+    $baseDir/data/plsdb_table.RDS
 
     """
 }
-
-
-
 
 process RetrievePlasmids {
   label 'small_mem'
@@ -90,24 +91,24 @@ process RetrievePlasmids {
    """
 }
 
-process Minidist_output {
+process MinidistOut {
   
-  label 'small cpus'
+  label 'small_cpus'
+
+  publishDir "$params.outdir/", mode: "copy"
 
   input:
   path "Minidist_result.tsv"
   path contigs
 
   output:
-  path "Minidist_plasmids.fasta"
-  path "Minidist_result.tsv"
+  path "Result.fasta"
+  path "Result.tsv"
   
   script:
   """
-  /usr/bin/env Rscript
-
-  read_delim("Minidist_reuslt.tsv")  
-  
+ 
+  Rscript $baseDir/bin/sum.minidist.R Minidist_result.tsv ${contigs}
 
   """
 

@@ -16,17 +16,22 @@ dbs_ch
 
 main:
 
-Splitter(fasta_ch)
+      
+       fasta_ch.splitFasta(by: 50, file:'spl_contigs' )
+       .set{ cntgs_splt_ch }
+
+Splitter( cntgs_splt_ch )
    
-   Splitter.out
-           .set{ fasta_spl_ch }
+Splitter.out
+        .collectFile(name: 'plasmid.split.final', newLine: true)
+        .set{ fasta_spl_ch }
 
 Mapping_pr(fasta_spl_ch, dbs_ch)
 
 Mapping_pr.out 
           .set{ paf_parse_ch }
 
-Parse_paf(paf_parse_ch, fasta_ch)   
+Parse_paf(paf_parse_ch, fasta_ch, fasta_spl_ch)   
 Parse_paf.out
          .set{minidist_ch}
 

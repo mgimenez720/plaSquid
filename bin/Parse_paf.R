@@ -4,7 +4,8 @@ args = commandArgs(trailingOnly=TRUE)
 
 paf = args[1]         # Input paf table
 fst = args[2]         # Input fasta file
-rds = args[3]         # Plsdb length and names
+cnt = args[3]         # Splitted fasta file 
+rds = args[4]         # Plsdb length and names
 
 library(tidyverse)
 library(Biostrings)
@@ -19,8 +20,11 @@ colnames(tab.all) <- c('qid','qlen','qst','qend','strand','sid','slen','sst','se
 fs1   <- readDNAStringSet(fst)
 nouts <- names(fs1)
 louts <- width(fs1)
-
 nct <- character(0)
+
+tig <- readDNAStringSet(cnt)
+ntg <- names(tig)
+rm(tig)
 
 for (i in 1:length(fs1)) {
   
@@ -28,7 +32,7 @@ for (i in 1:length(fs1)) {
   cns  <- strsplit(nout, split = " ")[[1]][1]
   cnx  <- paste0(cns,"_")
   nct  <- c(nct, cnx)
-
+  
 }
 
 ctg <- character(0)
@@ -44,15 +48,21 @@ for (x in 1:length(nct)) {
   idx  <- grep(tnc, tab.all$qid, fixed = TRUE)
   tab  <- tab.all[idx,]
   
-  tqi <- unique(tab$qid)
+  sbs <- grep(tnc, ntg, value = TRUE)
+  
+  
+  if (nrow(tab) > 0) {
   
   S <- numeric(length = 0L)
   
-  for (i in 1:length(tqi)) {
+  for (i in 1:length(sbs)) {
     
-  tq <- tqi[i]  
+  sb <- sbs[i]  
   
-  tab2 <- subset.data.frame(tab, tab$qid == tq)
+  tab2 <- subset.data.frame(tab, tab$qid == sb)
+  
+  if (nrow(tab2)>0) {
+  
   tab1 <- tab2[1,]
 
   pid  <- (tab1$match/tab1$len)*100
@@ -61,30 +71,35 @@ for (x in 1:length(nct)) {
 
   S <- c(S, s1)
   
+  } else {
+    
+  S <- c(S, 0) 
+    
+  }
   }
   
-   if (dim(tab)[1]==0) {
+  similarities[[x]] <- S
+  
+  dtf <- as.data.frame(table(tab$sid))
+  csx <- dtf[order(dtf$Freq, decreasing = TRUE),]
+  dbh <- csx$Var1[1]
+  
+  tq  <- tab$qid
+  dbq <- tq[1]
+  
+  sbj[x]	<- as.character(as.vector(dbh))
+  
+    
+  } else {
 
     similarities[[x]] <- 0
 
     sbj[x] <- NA
-    
-  } else {
-
-     similarities[[x]] <- S
-
-    dtf <- as.data.frame(table(tab$sid))
-    csx <- dtf[order(dtf$Freq, decreasing = TRUE),]
-    dbh <- csx$Var1[1]
-
-    tq  <- tab$qid
-    dbq <- tq[1]
-
-    sbj[x]	<- as.character(as.vector(dbh))
+  
   }
 
    # sbt <- c(sbt, as.character(tab1$sid))
-
+  
 }
 
 sim <- rapply(similarities, mean)
@@ -143,10 +158,12 @@ if (sim[j] > 45) {
   
   
 } 
+
+     df1 <- subset.data.frame(df, df$`S-distance`>45)
      
-     fsj <- fs1[j]
+     fsj <- fs1[idx]
      writeXStringSet(fsj, "Minidist_plasmid.fasta")
-     write_delim(df, delim = "\t", path = "Minidist_result.tsv", col_names = TRUE)
+     write_delim(df1, delim = "\t", path = "Minidist_result.tsv", col_names = TRUE)
 
  
 
