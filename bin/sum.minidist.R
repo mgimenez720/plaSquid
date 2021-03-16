@@ -18,7 +18,7 @@
 
     names(tbm) <- c("name","Sim_dist","plsdb_match","Match_length","Contig_length")
     
-    tbm1 <- subset.data.frame(tbm, subset = tbm$Sim_dist > 45)
+    tbm1 <- subset.data.frame(tbm, subset = tbm$Sim_dist > 60)
   
     hts <- tbm1$name
     idx <- which(nfs %in% hts)
