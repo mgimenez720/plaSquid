@@ -48,7 +48,7 @@ for (x in 1:length(nct)) {
   idx  <- grep(tnc, tab.all$qid, fixed = TRUE)
   tab  <- tab.all[idx,]
   
-  sbs <- grep(tnc, ntg, value = TRUE)
+  sbs <- unique(grep(tnc, ntg, value = TRUE))
   
   
   if (nrow(tab) > 0) {
@@ -118,7 +118,7 @@ idx <- numeric(length=0L)
 
 for (j in 1:length(nouts)){
 
-if (sim[j] > 45) {  
+if (sim[j] > 50) {  
     
   sbi <- sbj[j]
   spl <- grep(sbi, plsdb_names, fixed = TRUE)
@@ -159,7 +159,7 @@ if (sim[j] > 45) {
   
 } 
 
-     df1 <- subset.data.frame(df, df$`S-distance`>45)
+     df1 <- subset.data.frame(df, df$`S-distance`>50)
      
      fsj <- fs1[idx]
      writeXStringSet(fsj, "Minidist_plasmid.fasta")
