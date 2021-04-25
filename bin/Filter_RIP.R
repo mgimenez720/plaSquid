@@ -170,8 +170,6 @@
       
       
     }
-    # Falta terminar, sacar una tabla con Info similar a la de MOB y Inc. 
-    # Revisar los filtros single dom.
     
       
    ftb <-  rbind(ssp, sop, mop)

@@ -42,6 +42,8 @@ for (i in 1:length(mbs)) {
   tbf <- rbind(tbf, tbu)
   
 }
+ 
+if (nrow(tbf)>0) {
 
  cn <- character(0)
 
@@ -56,5 +58,6 @@ for (i in 1:length(mbs)) {
  
  tbf$contig <- cn
 
+}
  write_delim(tbf, "Mob_table.tsv", delim = "\t")
 
