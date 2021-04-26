@@ -51,10 +51,7 @@
  rpd1 <- rpd %>%
          group_by(contig) %>%
          summarise_all(funs(paste(., collapse = ',')))     
- } else { rpd1 <- tibble("Rep_domain" = character(0),
-                         "contig" = character(0),
-                         "Rep_ORF" = character(0)) 
- }
+ } 
  
  if ( nrow(rps) > 0 ) {
  
@@ -63,7 +60,7 @@
          group_by(contig) %>% 
          summarise_all(funs(paste(., collapse = ',')))
  
- } else { rps1 <- rpd1 }
+ }
  
  if ( nrow(mbs) > 0 ) {
  
@@ -72,78 +69,83 @@
          group_by(contig) %>% 
          summarise_all(funs(paste(., collapse = ',')))
  
- ftb <- full_join(rps1, mbs1, by = "contig")
- 
- } else {
-    
- ftb <- full_join(rpd1, rps1, by = "contig")
-    
  }
  
- ftb1 <- full_join(rpd1, rps1, by = "contig")
  
- fct <- ftb1$contig
- nht <- names(hit)
- len <- numeric(0)
- 
- for (i in 1:length(fct)){
-   
-   ct <- fct[i]
-   idx <- which(nht == ct)
-   cnl <- width(hit[idx])
-   
-   len <- c(len, cnl)
-   
- }
- 
- ftb1$contig_length <- len
  
  
  if ( length(mbc)>0 & length(rpc)>0 & length(rdc)>0 ) {
-    
- ftb2 <- ftb1[,c(c("contig","Rep_domain","MOB_group","Rep_type","contig_length"))]
- colnames(ftb2)<- c("Contig", "RIP_domain", "MOB_group", "Inc_group", "contig_length")
+     
+ mtb  <- full_join(rpd1, rps1, by = "contig")
+ mtb1 <- full_join(mtb, mbs1, by = "contig")
+     
+ ftb2 <- mtb1[,c(c("contig","Rep_domain","MOB_group","Rep_type"))]
+ colnames(ftb2)<- c("Contig", "RIP_domain", "MOB_group", "Inc_group")
  
  } else if ( length(mbc)== 0 & length(rpc)>0 & length(rdc)>0 ) {
-    
- ftb2 <- ftb1[,c(c("contig","Rep_domain","Rep_type","contig_length"))] 
- colnames(ftb2)<-  c("Contig", "RIP_domain", "Inc_group", "contig_length")
+     
+ mtb1  <- full_join(rpd1, rps1, by = "contig")
+     
+ ftb2 <- mtb1[,c(c("contig","Rep_domain","Rep_type"))] 
+ colnames(ftb2)<-  c("Contig", "RIP_domain", "Inc_group")
+
  ftb2$MOB_group <- rep(NA, length(ftb2$Contig))
  
  } else if ( length(mbc) > 0 & length(rpc)==0 & length(rdc)>0 ) {
  
- ftb2 <- ftb1[,c(c("contig","Rep_domain","MOB_group","contig_length"))]
- colnames(ftb2)<-  c("Contig", "RIP_domain", "MOB_group", "contig_length")
+ mtb1  <- full_join(rpd1, mbs1, by = "contig")
+     
+ ftb2 <- mtb1[,c(c("contig","Rep_domain","MOB_group"))]
+ colnames(ftb2)<-  c("Contig", "RIP_domain", "MOB_group")
  ftb2$Inc_group <- rep(NA, length(ftb2$Contig))
  
  } else if ( length(mbc) > 0 & length(rpc)>0 & length(rdc)==0 ) {
     
- ftb2 <- ftb1[,c(c("contig","MOB_group","Rep_type", "contig_length"))]
- colnames(ftb2)<-  c("Contig", "MOB_group", "Inc_group", "contig_length")
+ mtb1  <- full_join(rps1, mbs1, by = "contig")
+     
+ ftb2 <- mtb1[,c(c("contig","MOB_group","Rep_type"))]
+ colnames(ftb2)<-  c("Contig", "MOB_group", "Inc_group")
  ftb2$RIP_domain <- rep(NA, length(ftb2$Contig))
  
  } else if ( length(mbc)==0 & length(rpc)==0 & length(rdc)>0 ) {
  
- ftb2 <- ftb1[,c(c("contig","Rep_domain","contig_length"))]
- colnames(ftb2)<-  c("Contig", "RIP_domain", "contig_length")
+ ftb2 <- rpd1[,c(c("contig","Rep_domain"))]
+ colnames(ftb2)<-  c("Contig", "RIP_domain")
  ftb2$Inc_group <- rep(NA, length(ftb2$Contig))
  ftb2$MOB_group <- rep(NA, length(ftb2$Contig))
     
  } else if ( length(mbc)==0 & length(rpc)>0 & length(rdc)==0 ) {
     
- ftb2 <- ftb1[,c(c("contig","Rep_type","contig_length"))]
- colnames(ftb2)<-  c("Contig", "Inc_group", "contig_length")
+ ftb2 <- rps1[,c(c("contig","Rep_type"))]
+ colnames(ftb2)<-  c("Contig", "Inc_group")
  ftb2$RIP_domain <- rep(NA, length(ftb2$Contig))
  ftb2$MOB_group <- rep(NA, length(ftb2$Contig))
  
  } else if ( length(mbc)>0 & length(rpc)==0 & length(rdc)==0 ) {
     
- ftb2 <- ftb1[,c(c("contig","MOB_group","contig_length"))]
- colnames(ftb2)<-  c("Contig", "MOB_group", "contig_length")
+ ftb2 <- mbs1[,c(c("contig","MOB_group"))]
+ colnames(ftb2)<-  c("Contig", "MOB_group")
  ftb2$RIP_domain <- rep(NA, length(ftb2$Contig))
  ftb2$Inc_group <- rep(NA, length(ftb2$Contig))
     
  }
+ 
+ 
+ fct <- ftb2$Contig
+ nht <- names(hit)
+ len <- numeric(0)
+ 
+ for (i in 1:length(fct)){
+     
+     ct <- fct[i]
+     idx <- which(nht == ct)
+     cnl <- width(hit[idx])
+     
+     len <- c(len, cnl)
+     
+ }
+ 
+ ftb2$contig_length <- len
  
  #Writing final results
  
