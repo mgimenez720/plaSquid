@@ -8,18 +8,18 @@
  tbd = args[2]
  tbm = args[3]
  asm = args[4]
- 
-# tbr = 'Filtered_classif.tsv'
-# tbd = 'Rep_domains.tsv'
-# tbm = 'Mob_table.tsv'
-# asm = 'assembly.fa'
+
+ tbr = 'Filtered_classif.tsv'
+ tbd = 'Rep_domains.tsv'
+ tbm = 'Mob_table.tsv'
+ asm = 'assembly.fa'
  
  library(tidyverse)
  library(Biostrings)
  
  #Load data
  
- rps <- distinct(read_delim(tbr, delim="\t"), .keep_all = TRUE)
+ rps <- read_delim(tbr, delim="\t")
  rpd <- na.omit(read_delim(tbd, delim = "\t"))
  mbs <- read_delim(tbm, delim="\t")
  mtg <- readDNAStringSet(asm)
@@ -55,7 +55,7 @@
  
  if ( nrow(rps) > 0 ) {
  
- names(rps) <- c("Rep_ORF", "Rep_len", "Rep_type", "Rep_score", "contig")   
+ names(rps) <- c("Rep_type", "Rep_ORF", "Rep_score", "Rep_length", "contig")   
  rps1 <- rps %>% 
          group_by(contig) %>% 
          summarise_all(funs(paste(., collapse = ',')))

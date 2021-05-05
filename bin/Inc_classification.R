@@ -1,16 +1,17 @@
 #!/usr/bin/Rscript
 
-
 args = commandArgs(trailingOnly=TRUE)
 
 hmt = args[1]
 cmt = args[2]
 
+hmt = "Inc_candidates.tsv"
+cmt = "RNA_candidates.tsv"
+
 library(tidyverse)
 
-
 hmt <- as_tibble(read.table(hmt, header=FALSE, sep = "", comment.char = '#', 
-            col.names= c("Inc_det","taccession","tlen","query_name",
+            col.names= c("query_name","taccession","tlen","Inc_det",
                         "qaccession","qlen","Evalue","score","bias",
                         "num","of","CEvalue","iEvalue","domscore","dombias",
                         "hmmfrom","hmmto","alifrom","alito","envfrom",
@@ -35,7 +36,7 @@ hdl <- tibble("Inc_det" = character(0),
    inc <- Incs[i]
    scc <- sci[i]
    
-   hm1 <- subset.data.frame(hmt, hmt$query_name == inc)
+   hm1 <- subset.data.frame(hmt, hmt$Inc_det == inc)
    hms <- subset.data.frame(hm1, subset = hm1$score >= scc, select = c("Inc_det", "tlen", "query_name", "score"))
    
    hdl <- rbind(hdl, hms)
@@ -47,9 +48,9 @@ hdl <- tibble("Inc_det" = character(0),
   
    cnt <- character(0)
  
-   for (i in 1:length(hdl$Inc_det)){
+   for (i in 1:length(hdl$query_name)){
     
-    ri <- hdl$Inc_det[i]
+    ri <- hdl$query_name[i]
     
     rc <- strsplit(ri, split = "_")[[1]][1]
     
@@ -62,7 +63,7 @@ hdl <- tibble("Inc_det" = character(0),
 # Threshold specific filtering of RNA incompatibility determinants
 
 cm1 <- as_tibble(read.table(cmt, header=FALSE, sep = "", comment.char = '#', 
-                           col.names= c("Inc_det","accession", "query_name","accession","mdl",
+                           col.names= c("query_name","accession", "Inc_det","accession","mdl",
                                         "mdl_from","mdl_to","seq_from","seq_to","strand","trunc",
                                         "pass","gc","bias","score","E-value", "inc", "DoT"),
                            fill = TRUE, stringsAsFactors = FALSE))
@@ -89,7 +90,7 @@ cm1 <- as_tibble(read.table(cmt, header=FALSE, sep = "", comment.char = '#',
    cmi <- cmm[i]
    sci <- scm[i]
    
-   cmk <- subset.data.frame(cm1, cm1$query_name == cmi)
+   cmk <- subset.data.frame(cm1, cm1$Inc_det == cmi)
    cmh <- subset.data.frame(cmk, cmk$score >= sci, select = c(Inc_det, query_name, score, mdl_from))
    
    if (cmi == "Col440I") {
@@ -105,9 +106,9 @@ cm1 <- as_tibble(read.table(cmt, header=FALSE, sep = "", comment.char = '#',
    hdc <- rbind(hdc, cmh1)
  }
 
-  n <- length(hdc$Inc_det)
+  n <- length(hdc$query_name)
   hdc$tlen <- rep("NA", n)
-  hdc$contig <- hdc$Inc_det
+  hdc$contig <- hdc$query_name
   
 
   ctb <- rbind(hdc, hdl)

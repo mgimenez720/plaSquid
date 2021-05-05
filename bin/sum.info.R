@@ -45,10 +45,10 @@
   
   ftb3 <- ftb2[,c("Contig.y","Contig","Sim_dist","plsdb_match","Match_length","Rep_type", "MOB_group", "RIP_domain", "Contig_length.y")]
   
-  names(ftb3) <- c("Contig", "name", "Sim_dist","plsdb_match","Match_length","Inc_group", "MOB_group", "RIP_domain", "Contig_length")
+  names(ftb3) <- c("Contig", "name", "Sim_dist","plsdb_match","Match_length","RIP_domain", "MOB_group", "Rep_type", "Contig_length")
 
 
-  ftb4 <- subset.data.frame(ftb3, subset = ftb3$Sim_dist>45 | ftb3$Inc_group != "NA" | ftb3$MOB_group != "NA" | ftb3$RIP_domain != "NA")
+  ftb4 <- subset.data.frame(ftb3, subset = ftb3$Sim_dist>45 | ftb3$Rep_type != "NA" | ftb3$MOB_group != "NA" | ftb3$RIP_domain != "NA")
   
    hts <- ftb4$name
    idx <- which(nfs %in% hts)
