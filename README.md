@@ -1,4 +1,4 @@
-# plaSquid: PLAsmid SeQuences IDentification in metagenomic assemblies.  
+# plaSquid: **Pla**smid **S**e**q**uences **Id**entification in metagenomic assemblies.  
 
 ### Description
 
