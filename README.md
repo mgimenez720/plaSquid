@@ -66,6 +66,6 @@ biostrings 2.58.0
     Microbial Genomics Laboratory
     Institut Pasteur Montevideo (Uruguay)
 
-###Note
+### Note
 
 This is a beta version, please report bugs or misfunctions detected.
