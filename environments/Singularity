@@ -1,0 +1,18 @@
+Bootstrap: docker
+From: conda/miniconda3
+
+%labels 
+	Authors: Matías Giménez <mgimenez@pasteur.edu.uy> & Ignacio Ferres <iferres@pasteur.edu.uy>
+
+# Copy conda recipe 
+%files 
+	plaSquid.yml /
+
+# Install conda env
+%post 
+	conda env create -f /plaSquid.yml
+	conda clean -afy
+
+# Export  PATH
+%environment 
+	PATH="/usr/local/envs/plaSquid/bin:$PATH"
