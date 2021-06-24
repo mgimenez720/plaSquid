@@ -8,6 +8,10 @@
 
 - It summarises the information gathered by the two complementary approaches in a single output table and allows further analysis on plasmidic contigs as ir outputs plasmidic contigs in a multifasta file (*"Result.fasta"*)
 
+###Pipeline overview
+
+![Alt text](C:\Users\user\Documents\Doctorado ANII\plaSquid\plaSquid_manuscript\plaSquid_pipeline.pmg)
+
 ### Installation
 
     git clone https://github.com/mgimenez720/plaSquid/
