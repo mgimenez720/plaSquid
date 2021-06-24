@@ -17,7 +17,17 @@ Using the option (*"-profile conda"*) when running plaSquid will build a conda e
 
 #### Dependencies
 
+All dependencies are provided within the conda evironment. Manual installation is discouraged. 
 
+[hmmer 3.3.1](http://hmmer.org/download.html)
+[infernal 1.1.3](http://eddylab.org/infernal/)
+[minimap2 2.17](https://github.com/lh3/minimap2)
+[prodigal 2.6.3](https://github.com/hyattpd/Prodigal)
+R packages:
+dplyr 1.0.4
+tidyverse 1.3.0
+seqinr 4.2_5
+biostrings 2.58.0
 
 
 ### Usage 
@@ -54,3 +64,6 @@ Using the option (*"-profile conda"*) when running plaSquid will build a conda e
     Microbial Genomics Laboratory
     Institut Pasteur Montevideo (Uruguay)
 
+###Note
+
+This is a beta version, please report bugs or misfunctions detected.
