@@ -10,7 +10,7 @@
 
 ###Pipeline overview
 
-![Alt text](C:\Users\user\Documents\Doctorado ANII\plaSquid\plaSquid_manuscript\plaSquid_pipeline.pmg)
+![Alt text](C:\Users\user\Documents\Doctorado ANII\plaSquid\plaSquid_manuscript\plaSquid_pipeline.png)
 
 ### Installation
 
