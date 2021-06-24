@@ -9,13 +9,14 @@
 - It summarises the information gathered by the two complementary approaches in a single output table and allows further analysis on plasmidic contigs as ir outputs plasmidic contigs in a multifasta file (*"Result.fasta"*)
 
 ### Installation
-  
-  git clone https://github.com/mgimenez720/plaSquid/
-  cd plaSquid/
+
+    git clone https://github.com/mgimenez720/plaSquid/
+    cd plaSquid/
  
-Using the option (*"-profile conda"*) when running plaSquid will build a conda environment within the base directory. This environment is reused in subsequent runs.   
+Using the option (*"-profile conda"*) when running plaSquid will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
 
 #### Dependencies
+
 
 
 
@@ -27,9 +28,8 @@ Using the option (*"-profile conda"*) when running plaSquid will build a conda e
     arguments:
 
     --contigs       Path to input data (must be surrounded with quotes).
-    --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb                                                                                         database-
+    --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database.
     --outdir        Path to output directory where results are written.
-
     --help          Print help message and exit
 
     subworkflows:
@@ -51,6 +51,6 @@ Using the option (*"-profile conda"*) when running plaSquid will build a conda e
     Gregorio Iraola
 
 
-Microbial Genomics Laboratory
-Institut Pasteur Montevideo (Uruguay)
+    Microbial Genomics Laboratory
+    Institut Pasteur Montevideo (Uruguay)
 
