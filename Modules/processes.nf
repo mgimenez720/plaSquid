@@ -145,7 +145,7 @@ label 'big_cpus'
    script:
    """
 
-   prodigal -a prots.faa -i assembly.fa
+   prodigal -p meta -a prots.faa -i assembly.fa
   
    """
 }

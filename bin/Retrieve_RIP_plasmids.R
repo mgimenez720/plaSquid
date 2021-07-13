@@ -128,6 +128,14 @@
  ftb2$RIP_domain <- rep(NA, length(ftb2$Contig))
  ftb2$Inc_group <- rep(NA, length(ftb2$Contig))
     
+ } else {
+     
+    ftb2 <- tibble("Contig" = NA,
+                   "RIP_domain" = NA,
+                   "MOB_group" = NA,
+                   "Inc_group" = NA
+                   )
+      
  }
  
  
@@ -145,7 +153,15 @@
      
  }
  
+ if(is.na(fct)) {
+ 
+ ftb2$contig_length <- NA
+ 
+ } else {
+   
  ftb2$contig_length <- len
+ 
+ }
  
  #Writing final results
  
