@@ -24,7 +24,7 @@ include { RIPsearch } from './workflows/RIPsearch.nf'
 //Include modules
 include { SumOutput } from './Modules/processes.nf'
 include { MinidistOut } from './Modules/processes.nf'
-
+include { RepsearchOut } from './Modules/processes.nf'
 
 def sayHi(){
   log.info '''
@@ -102,6 +102,8 @@ if (params.repsearch) {
   RIPsearch( fasta_ch )
   RIPsearch.out
            .set{ gene_search_ch }
+  RepsearchOut( fasta_ch, gene_search_ch )
+
 } else if (params.minidist) {
 
    Minidist( fasta_ch, dbs_ch )

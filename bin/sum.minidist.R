@@ -28,4 +28,3 @@
     write_delim(tbm1,"Result.tsv", delim= "\t")
 
 
-#Falta agregar un proceso con este script cuando llamo solo a Minidist y agregar una carpeta de output! como hace sum info???

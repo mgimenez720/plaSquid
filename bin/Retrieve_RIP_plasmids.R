@@ -1,4 +1,4 @@
-#!/bin/bash/env Rscript
+#!/usr/bin/env Rscript
 
 #Rscript Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 

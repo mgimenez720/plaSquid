@@ -114,6 +114,29 @@ process MinidistOut {
 
 }
 
+process RepsearchOut {
+
+  label 'small_cpus'
+
+  publishDir "$params.outdir/", mode: "copy"
+
+  input:
+  path contigs
+  path "Plasmid_Report.tsv"
+  
+
+  output:
+  path "Result.tsv"
+  path "Result.fasta"
+
+  script:
+  """
+  repsearch_sum.R Plasmid_Report.tsv ${contigs}
+
+  """
+
+}
+
 process Renamecntgs {
   label 'big_mem'
   label 'small_cpus'
