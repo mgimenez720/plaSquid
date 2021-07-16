@@ -1,4 +1,4 @@
-#!/bin/bash/env Rscript
+#!/usr/bin/env Rscript
 
     args = commandArgs(trailingOnly=TRUE)
     
