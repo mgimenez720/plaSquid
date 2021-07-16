@@ -53,7 +53,10 @@
    hts <- ftb4$name
    idx <- which(nfs %in% hts)
    fst1 <- fst[idx]
+   
+   ftb4$Contig_length <- width(fst1)
 
+   
    writeXStringSet(fst1, "Result.fasta")
    write_delim(ftb4,"Result.tsv", delim= "\t")
 

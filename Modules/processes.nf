@@ -14,7 +14,7 @@ process Splitter {
     script:         
     """
     
-    Rscript $baseDir/bin/splitter.R spl_contigs
+    splitter.R spl_contigs
     
     """
 }
@@ -49,8 +49,6 @@ process Mapping_pr {
 process Parse_paf {
     label 'big_mem'
     label 'big_cpus'
-
-    tag "$contig_id"
     
     input:
     path "plasmid.split.paf"
@@ -63,7 +61,7 @@ process Parse_paf {
     script:
     """
     
-    Rscript $baseDir/bin/Parse_paf.R \
+    Parse_paf.R \
     plasmid.split.paf \
     ${contigs} \
     plasmid.split.final \
@@ -86,7 +84,7 @@ process RetrievePlasmids {
 
    script:
    """
-   Rscript $baseDir/bin/Retrieve_plasmids.R temp.tsv ${contigs}
+   Retrieve_plasmids.R temp.tsv ${contigs}
    
    """
 }
@@ -108,7 +106,7 @@ process MinidistOut {
   script:
   """
  
-  Rscript $baseDir/bin/sum.minidist.R Minidist_result.tsv ${contigs}
+  sum.minidist.R Minidist_result.tsv ${contigs}
 
   """
 
@@ -207,7 +205,7 @@ label 'big_cpus'
   script:
   """
 
-  Rscript $baseDir/bin/Dom_Arch.R ProtvsRep.tsv
+  Dom_Arch.R ProtvsRep.tsv
 
   """
 
@@ -229,7 +227,7 @@ label 'big_cpus'
   script:
   """
 
-  Rscript $baseDir/bin/Filter_RIP.R multi_dom_RIP.tsv single_dom_RIP.tsv Domain_Architecture.RDS $baseDir/data/Arq_RIP_new.RDS
+  Filter_RIP.R multi_dom_RIP.tsv single_dom_RIP.tsv Domain_Architecture.RDS $baseDir/data/Arq_RIP_new.RDS
 
   """
 
@@ -287,7 +285,7 @@ label 'small_cpus'
   script:
   """
 
-  Rscript $baseDir/bin/Inc_classification.R Inc_candidates.tsv RNA_candidates.tsv 
+  Inc_classification.R Inc_candidates.tsv RNA_candidates.tsv 
   
   """
 }
@@ -306,7 +304,7 @@ label 'small_cpus'
   script:
   """
 
-  Rscript $baseDir/bin/Filter_classification.R Classification_table.tsv 
+  Filter_classification.R Classification_table.tsv 
   
   """
 }
@@ -342,7 +340,7 @@ label 'small_cpus'
   script:
   """
 
-  Rscript $baseDir/bin/Filter_Mob.R Mob_candidates.tsv 
+  Filter_Mob.R Mob_candidates.tsv 
   
   """
 }
@@ -365,7 +363,7 @@ label 'big_cpus'
   script:
   """
   
-  Rscript $baseDir/bin/Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
+  Retrieve_RIP_plasmids.R Filtered_classif.tsv Rep_domains.tsv Mob_table.tsv assembly.fa
 
   """
 
@@ -389,7 +387,7 @@ publishDir "$params.outdir/", mode: "copy"
   script:
   """
   
-  Rscript $baseDir/bin/sum.info.R Minidist_result.tsv Plasmid_Report.tsv ${contigs} 
+  sum.info.R Minidist_result.tsv Plasmid_Report.tsv ${contigs} 
   
   """
 
