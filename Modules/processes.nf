@@ -368,6 +368,31 @@ label 'big_cpus'
   """
 
 }
+
+process RipExtract {
+
+label 'big_mem' 
+label 'big_cpus'
+
+publishDir "$params.outdir/", mode: "copy"
+
+  input:
+  path "prots.faa"
+  path "Filtered_Classif.tsv"
+  path "Rep_domains.tsv"
+
+  output:
+  path "RIP_seqs.faa"
+
+  script:
+  """
+  
+  RIP_extraction.R prots.faa Filtered_Classif.tsv Rep_domains.tsv
+  
+  """
+
+}
+
 process SumOutput {
 
 label 'small_mem'

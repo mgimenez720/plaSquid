@@ -10,6 +10,7 @@ params.outdir = "Results"
 
 params.minidist = false
 params.repsearch = false
+params.ripextract = false
 
 params.help = false
 
@@ -19,7 +20,7 @@ params.help = false
 include { SetPlsdb } from './workflows/Plsdb.nf'
 include { Minidist } from './workflows/Minidist.nf'
 include { RIPsearch } from './workflows/RIPsearch.nf'
-
+include { RIPextract } from './workflows/RIPextract.nf'
 
 //Include modules
 include { SumOutput } from './Modules/processes.nf'
@@ -60,7 +61,8 @@ def helpMessage() {
     
     --minidist      Run mapping of contigs against plsdb database. 
     --repsearch     Run search and classification of RIP and MOB (Rel) genes.
-    
+    --ripextract    Run extraction of RIP sequences.
+
     profiles:
     
     -profile conda  Installs dependencies using a conda environment
@@ -111,18 +113,22 @@ if (params.repsearch) {
         .set{ minidist_ch }
    MinidistOut( minidist_ch, fasta_ch )
 
+} else if (params.ripextract) {
+
+   RIPextract( fasta_ch )
+
 } else {
 
-RIPsearch( fasta_ch )
-RIPsearch.out
-         .set{ gene_search_ch }
+  RIPsearch( fasta_ch )
+  RIPsearch.out
+           .set{ gene_search_ch }
 
-Minidist( fasta_ch, dbs_ch )
-Minidist.out
-        .set{ minidist_ch }
+  Minidist( fasta_ch, dbs_ch )
+  Minidist.out
+          .set{ minidist_ch }
 
 
-SumOutput( minidist_ch, gene_search_ch, fasta_ch )
+  SumOutput( minidist_ch, gene_search_ch, fasta_ch )
 
 }
 }
