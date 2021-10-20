@@ -37,6 +37,8 @@ process Mapping_pr {
     
     minimap2 \
     -x asm5 \
+    --secondary=no \
+    -2 \
     plsdb.mmi \
     plasmid.split.final \
     -t ${task.cpus} \
@@ -388,6 +390,29 @@ publishDir "$params.outdir/", mode: "copy"
   """
   
   RIP_extraction.R prots.faa Filtered_Classif.tsv Rep_domains.tsv
+  
+  """
+
+}
+
+process MobExtract {
+
+label 'small_mem' 
+label 'small_cpus'
+
+publishDir "$params.outdir/", mode: "copy"
+
+  input:
+  path "prots.faa"
+  path "MOB_table.tsv"
+
+  output:
+  path "MOB_seqs.faa"
+
+  script:
+  """
+  
+  MOB_extraction.R prots.faa MOB_table.tsv
   
   """
 

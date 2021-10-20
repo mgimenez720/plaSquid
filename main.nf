@@ -11,6 +11,7 @@ params.outdir = "Results"
 params.minidist = false
 params.repsearch = false
 params.ripextract = false
+params.mobextract = false
 
 params.help = false
 
@@ -21,6 +22,7 @@ include { SetPlsdb } from './workflows/Plsdb.nf'
 include { Minidist } from './workflows/Minidist.nf'
 include { RIPsearch } from './workflows/RIPsearch.nf'
 include { RIPextract } from './workflows/RIPextract.nf'
+include { MOBextract } from './workflows/MOBextract.nf'
 
 //Include modules
 include { SumOutput } from './Modules/processes.nf'
@@ -62,6 +64,7 @@ def helpMessage() {
     --minidist      Run mapping of contigs against plsdb database. 
     --repsearch     Run search and classification of RIP and MOB (Rel) genes.
     --ripextract    Run extraction of RIP sequences.
+    --mobextract    Run extraction of MOB sequences.
 
     profiles:
     
@@ -96,10 +99,6 @@ Channel
   .ifEmpty { exit 1, "Non fasta files found: ${params.contigs}" }
   .set{ fasta_ch }
 
-SetPlsdb()
-SetPlsdb.out
-        .set{ dbs_ch }
-
 if (params.repsearch) {
   RIPsearch( fasta_ch )
   RIPsearch.out
@@ -108,6 +107,10 @@ if (params.repsearch) {
 
 } else if (params.minidist) {
 
+   SetPlsdb()
+   SetPlsdb.out
+        .set{ dbs_ch }
+
    Minidist( fasta_ch, dbs_ch )
    Minidist.out
         .set{ minidist_ch }
@@ -115,9 +118,17 @@ if (params.repsearch) {
 
 } else if (params.ripextract) {
 
-   RIPextract( fasta_ch )
+   RIPextract( fasta_ch ) 
+
+} else if (params.mobextract) {
+
+   MOBextract( fasta_ch )
 
 } else {
+  
+  SetPlsdb()
+  SetPlsdb.out
+        .set{ dbs_ch }
 
   RIPsearch( fasta_ch )
   RIPsearch.out

@@ -54,10 +54,13 @@
    idx <- which(nfs %in% hts)
    fst1 <- fst[idx]
    
-   ftb4$Contig_length <- width(fst1)
+   
 
+   nms <- names(fst1)
+   ftb5 <- ftb4[match(nms, ftb4$name), ] 
+   ftb5$Contig_length <- width(fst1)
    
    writeXStringSet(fst1, "Result.fasta")
-   write_delim(ftb4,"Result.tsv", delim= "\t")
+   write_delim(ftb5,"Result.tsv", delim= "\t")
 
 
