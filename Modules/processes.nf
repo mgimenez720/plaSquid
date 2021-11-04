@@ -39,7 +39,7 @@ process Mapping_pr {
     -x asm5 \
     --secondary=no \
     -2 \
-    -d plsdb.mmi \
+    plsdb.mmi \
     plasmid.split.final \
     -t ${task.cpus} \
     > plasmid.split.paf
