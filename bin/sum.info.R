@@ -11,9 +11,11 @@
   fsn = args[3] #test.fasta
 
    
-   tbm <- read_delim(mbt, delim ="\t")
+   tbm <- read_delim(mbt, delim ="\t") 
+   
    tbr <- read_delim(rbt, delim = "\t")
-
+   tbr$Contig <- as.character(tbr$Contig)
+   
    fst <- readDNAStringSet(fsn)
    nfs <- names(fst)
 
@@ -34,6 +36,7 @@
   
   
   names(tbm) <- c("Contig","Sim_dist","plsdb_match","Match_length","Contig_length")
+  tbm$Contig <- as.character(tbm$Contig)
   ltb <-  inner_join (tbm, tns, by = c("Contig" = "names"))
 
 
