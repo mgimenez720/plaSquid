@@ -41,7 +41,7 @@ biostrings 2.58.0,
 ### Usage 
 
 
-    nextflow run plaSquid.nf --contigs 'data/test.fasta' --outdir 'plaSquid_result'
+    nextflow run plaSquid.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result'
 
     arguments:
 
