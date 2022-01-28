@@ -21,7 +21,7 @@ Using the option (*"-profile conda"*) when running plaSquid will build a conda e
 
 A docker container is also available with:
     
-    docker push mgimenez720/plasquid:tagname
+    docker pull mgimenez720/plasquid:tagname
 
 #### Dependencies
 
