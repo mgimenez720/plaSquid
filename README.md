@@ -27,15 +27,15 @@ A docker container is also available with:
 
 All dependencies are provided within the conda evironment. Manual installation is discouraged. 
 
-[hmmer 3.3.1](http://hmmer.org/download.html)
-[infernal 1.1.3](http://eddylab.org/infernal/)
-[minimap2 2.17](https://github.com/lh3/minimap2)
-[prodigal 2.6.3](https://github.com/hyattpd/Prodigal)
+[hmmer 3.3.1](http://hmmer.org/download.html),
+[infernal 1.1.3](http://eddylab.org/infernal/),
+[minimap2 2.17](https://github.com/lh3/minimap2),
+[prodigal 2.6.3](https://github.com/hyattpd/Prodigal),
 R packages:
-dplyr 1.0.4
-tidyverse 1.3.0
-seqinr 4.2_5
-biostrings 2.58.0
+dplyr 1.0.4,
+tidyverse 1.3.0,
+seqinr 4.2.5,
+biostrings 2.58.0,
 
 
 ### Usage 
