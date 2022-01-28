@@ -49,12 +49,12 @@ def helpMessage() {
     log.info """
     Usage:
     
-    nextflow run plaSquid.nf --contigs 'data/*.fasta' 
+    nextflow run main.nf --contigs {data/test.fasta} --outdir {Result_dir} 
     
     arguments:
     
     --contigs       Path to input data (must be surrounded with quotes).
-    --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database-
+    --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database.
     --outdir        Path to output directory where results are written.
 
     --help          Print help message and exit 
