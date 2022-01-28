@@ -2,11 +2,13 @@
 
 ### Description
 
-- **plaSquid** is a Nextflow pipeline for plasmid detection and classification in genomic and metagenomic data. This pipeline uses either genomic or metagenomic *assemblies* as input. It uses two different approaches to look for plasmids: to search against a plasmidic database (minidist) and to look for plasmid specific genes (Repsearch).
+- **plaSquid** is a Nextflow pipeline for plasmid detection and classification in genomic and metagenomic data. This pipeline accepts either genomic or metagenomic *assemblies* as input (.fasta). It uses two different approaches to look for plasmids: alignment with minimap2 against a plasmidic database (minidist) and HMM dependent search of plasmid specific genes (Repsearch).
 
 - **plaSquid** also classifies plasmids into replicon types and MOB groups by comparing RIPs or Relaxases against custom HMMs. 
 
-- It summarises the information gathered by the two complementary approaches in a single output table and allows further analysis on plasmidic contigs as ir outputs plasmidic contigs in a multifasta file (*"Result.fasta"*)
+- **plaSquid** can extract plasmids RIP or MOB sequences in order to further analyze these proteins.   
+
+- It summarises the information gathered by the two complementary approaches in a single output table and allows further analysis on plasmidic contigs as it outputs plasmidic contigs in a multifasta file (*"Result.fasta"*)
 
 ![Pipeline overview](./img/plaSquid_pipeline.png)
 
@@ -16,6 +18,10 @@
     cd plaSquid/
  
 Using the option (*"-profile conda"*) when running plaSquid will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
+
+    A docker container is also available with:
+    
+    docker push mgimenez720/plasquid:tagname
 
 #### Dependencies
 
@@ -35,7 +41,7 @@ biostrings 2.58.0
 ### Usage 
 
 
-    nextflow run plaSquid.nf --contigs 'data/*.fasta'
+    nextflow run plaSquid.nf --contigs 'data/test.fasta' --outdir 'plaSquid_result'
 
     arguments:
 
