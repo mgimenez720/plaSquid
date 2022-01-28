@@ -19,7 +19,7 @@
  
 Using the option (*"-profile conda"*) when running plaSquid will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
 
-    A docker container is also available with:
+A docker container is also available with:
     
     docker push mgimenez720/plasquid:tagname
 
