@@ -49,7 +49,7 @@ def helpMessage() {
     log.info """
     Usage:
     
-    nextflow run main.nf --contigs {data/test.fasta} --outdir {Result_dir} 
+    nextflow run main.nf --contigs 'testdata/test.fasta' --outdir 'Result_dir' 
     
     arguments:
     
