@@ -2,13 +2,13 @@
 
 ### Description
 
-- **plaSquid** is a Nextflow pipeline for plasmid detection and classification in genomic and metagenomic data. This pipeline accepts either genomic or metagenomic *assemblies* as input (.fasta). It uses two different approaches to look for plasmids: alignment with minimap2 against a plasmidic database (minidist) and HMM dependent search of plasmid specific genes (Repsearch).
+- **plaSquid** is a Nextflow pipeline for plasmid detection and classification in genomic and metagenomic data. This pipeline accepts either genomic or metagenomic *assemblies* as input (.fasta). It uses two different approaches to detect plasmids sequences: alignment with minimap2 against a plasmidic database (minidist) and HMM dependent search of plasmid specific genes (repsearch).
 
 - **plaSquid** also classifies plasmids into replicon types and MOB groups by comparing RIPs or Relaxases against custom HMMs. 
 
 - **plaSquid** can extract plasmids RIP or MOB sequences in order to further analyze these proteins.   
 
-- It summarises the information gathered by the two complementary approaches in a single output table and allows further analysis on plasmidic contigs as it outputs plasmidic contigs in a multifasta file (*"Result.fasta"*)
+- **plaSquid** summarises the information gathered by the two complementary approaches in a single output table and allows further analysis as it outputs plasmidic contigs in a single multifasta file (*"Result.fasta"*)
 
 ![Pipeline overview](./img/plaSquid_pipeline.png)
 
@@ -16,8 +16,10 @@
 
     git clone https://github.com/mgimenez720/plaSquid/
     cd plaSquid/
- 
-Using the option (*"-profile conda"*) when running plaSquid will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
+    conda env create --file environments/plaSquid.yml
+    
+    
+Another option is using the option (*"-profile conda"*) when running plaSquid, this will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
 
 A docker container is also available with:
     
@@ -41,7 +43,7 @@ biostrings 2.58.0,
 ### Usage 
 
 
-    nextflow run plaSquid.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result'
+    nextflow run main.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result'
 
     arguments:
 
