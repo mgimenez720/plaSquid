@@ -43,7 +43,7 @@ biostrings 2.58.0,
 ### Usage 
 
 
-    nextflow run main.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result'
+    nextflow run main.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result' -with-docker mgimenez720/plasquid:latest
 
     arguments:
 
@@ -56,7 +56,9 @@ biostrings 2.58.0,
 
     --minidist      Run mapping of contigs against plsdb database.
     --repsearch     Run search and classification of RIP and MOB (Rel) genes.
-
+    --ripextract    Extract replication initiator proteins sequences.
+    --mobextract    Extract relaxases sequences.
+    
     profiles:
 
     -profile conda  Installs dependencies using a conda environment
