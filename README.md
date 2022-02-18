@@ -80,16 +80,15 @@ biostrings 2.58.0,
 
 - **plaSquid** outputs consist of a fasta file "Result.fasta" with plasmids contigs detected and a table "Result.tsv" with the following fields: 
 
-"Contig": contig id for plaSquid
-"name": contig name in the assembly file
-"Sim-dist": S value obtained by Minidist workflow
-"plsdb_match": plasmid matched at plsdb database
-"Match_length": length of the plasmid matched at plsdb
-"RIP_domain": RIP-domain found in the contig 
-"MOB_group": MOB group classification of relaxase found in the contig 
-"Rep_type": Rep-type classifiation of the contig analyzed
-"Contig_length": size of the contig analyzed
-
+>"Contig": contig id for plaSquid   
+"name": contig name in the assembly file  
+"Sim-dist": S value obtained by Minidist workflow  
+"plsdb_match": plasmid matched at plsdb database  
+"Match_length": length of the plasmid matched at plsdb  
+"RIP_domain": RIP-domain found in the contig   
+"MOB_group": MOB group classification of relaxase found in the contig   
+"Rep_type": Rep-type classifiation of the contig analyzed  
+"Contig_length": size of the contig analyzed  
 
 ### Note
 
