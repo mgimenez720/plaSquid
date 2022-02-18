@@ -19,7 +19,7 @@
     conda env create --file environments/plaSquid.yml
     
     
-Another option is using the option (*"-profile conda"*) when running plaSquid, this will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
+Another option is using (*"-profile conda"*) when running plaSquid, this will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
 
 A docker container is also available with:
     
@@ -27,7 +27,7 @@ A docker container is also available with:
 
 ### Dependencies
 
-All dependencies are provided within the conda evironment. Manual installation is discouraged. 
+All dependencies are provided within the containers available. Manual installation is discouraged. 
 
 [hmmer 3.3.1](http://hmmer.org/download.html),
 [infernal 1.1.3](http://eddylab.org/infernal/),
@@ -43,7 +43,7 @@ biostrings 2.58.0,
 ### Usage 
 
 
-    nextflow run main.nf --contigs 'testdata/test.fasta' --outdir 'plaSquid_result' -with-docker mgimenez720/plasquid:latest
+    nextflow run main.nf --contigs {testdata/test.fasta} --outdir {plaSquid_result} -with-docker mgimenez720/plasquid:latest
 
     arguments:
 
@@ -76,19 +76,19 @@ biostrings 2.58.0,
     Microbial Genomics Laboratory
     Institut Pasteur Montevideo (Uruguay)
 
-### Usage
+### Output
 
 - **plaSquid** outputs consist of a fasta file "Result.fasta" with plasmids contigs detected and a table "Result.tsv" with the following fields: 
 
->"Contig": contig id for plaSquid   
-"name": contig name in the assembly file  
-"Sim-dist": S value obtained by Minidist workflow  
-"plsdb_match": plasmid matched at plsdb database  
-"Match_length": length of the plasmid matched at plsdb  
-"RIP_domain": RIP-domain found in the contig   
-"MOB_group": MOB group classification of relaxase found in the contig   
-"Rep_type": Rep-type classifiation of the contig analyzed  
-"Contig_length": size of the contig analyzed  
+>**"Contig"**: contig id for plaSquid   
+**"name"**: contig name in the assembly file  
+**"Sim-dist"**: S value obtained by Minidist workflow  
+**"plsdb_match"**: plasmid matched at plsdb database  
+**"Match_length"**: length of the plasmid matched at plsdb  
+**"RIP_domain"**: RIP-domain found in that contig   
+**"MOB_group"**: MOB group classification of relaxase found in that contig   
+**"Rep_type"**: Rep-type classifiation of the contig detected  
+**"Contig_length"**: size of the contig detected  
 
 ### Note
 
