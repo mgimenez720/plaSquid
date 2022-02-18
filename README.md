@@ -78,7 +78,7 @@ biostrings 2.58.0,
 
 ### Output
 
-- **plaSquid** outputs consist of a fasta file "Result.fasta" with plasmids contigs detected and a table "Result.tsv" with the following fields: 
+- **plaSquid** outputs consist of a fasta file "Result.fasta" with plasmids contigs detected along with a table "Result.tsv" with the following fields: 
 
 >**"Contig"**: contig id for plaSquid   
 **"name"**: contig name in the assembly file  
