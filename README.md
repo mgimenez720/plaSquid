@@ -37,7 +37,7 @@ R packages:
 dplyr 1.0.4,
 tidyverse 1.3.0,
 seqinr 4.2.5,
-biostrings 2.58.0,
+biostrings 2.58.0.
 
 
 ### Usage 
