@@ -16,14 +16,19 @@
 
     git clone https://github.com/mgimenez720/plaSquid/
     cd plaSquid/
-    conda env create --file environments/plaSquid.yml
     
+You need nextflow installed in order to run plaSquid. Documentation availbale [here](https://www.nextflow.io/docs/latest/getstarted.html)     
     
-Another option is using (*"-profile conda"*) when running plaSquid, this will build a conda environment within the base directory. This environment can be reused in subsequent runs.   
+PlaSquid can be ran using docker or conda through the options: -profile docker or -profile conda   
 
-A docker container is also available with:
+If you want to generate a permanent docker image you can try:
     
     docker pull mgimenez720/plasquid:latest
+    
+If you want to generate a permanent conda environment you can try:
+
+    conda env create -f environments/plaSquid.yml
+
 
 ### Dependencies
 
@@ -43,7 +48,7 @@ biostrings 2.58.0.
 ### Usage 
 
 
-    nextflow run main.nf --contigs {testdata/test.fasta} --outdir {plaSquid_result} -with-docker mgimenez720/plasquid:latest
+    nextflow run main.nf --contigs {testdata/test.fasta} --outdir {plaSquid_result} -profile docker
 
     arguments:
 
@@ -62,6 +67,7 @@ biostrings 2.58.0.
     profiles:
 
     -profile conda  Installs dependencies using a conda environment
+    -profile docker Installs dependencies within a docker image
     -profile server runs using 15 cpus and 50 Gb
     -profile test   tests dependencies and normal functioning
 
