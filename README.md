@@ -17,7 +17,7 @@
     git clone https://github.com/mgimenez720/plaSquid/
     cd plaSquid/
     
-You need nextflow installed in order to run plaSquid. Documentation availbale [here](https://www.nextflow.io/docs/latest/getstarted.html)     
+You need nextflow installed in order to run plaSquid. Documentation is available [here](https://www.nextflow.io/docs/latest/getstarted.html)     
     
 PlaSquid can be ran using docker or conda through the options: -profile docker or -profile conda   
 
@@ -52,7 +52,7 @@ biostrings 2.58.0.
 
     arguments:
 
-    --contigs       Path to input data (must be surrounded with quotes).
+    --contigs       Path to input assemblies.
     --mmi           Path to Minimap2 indexed (.mmi) or fasta (.fasta/.fna) plsdb database.
     --outdir        Path to output directory where results are written.
     --help          Print help message and exit
