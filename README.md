@@ -19,7 +19,7 @@
     
 You need nextflow installed in order to run plaSquid. Documentation is available [here](https://www.nextflow.io/docs/latest/getstarted.html)     
     
-PlaSquid can be ran using docker or conda through the options: -profile docker or -profile conda   
+PlaSquid can be ran using docker or conda.  
 
 If you want to generate a permanent docker image you can try:
     
