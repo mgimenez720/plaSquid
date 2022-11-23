@@ -96,6 +96,11 @@ biostrings 2.58.0.
 **"Rep_type"**: Rep-type classifiation of the contig detected  
 **"Contig_length"**: size of the contig detected  
 
+###Citation 
+
+Available preprint 
+https://doi.org/10.1101/2022.08.04.502827
+
 ### Note
 
 This is a beta version, please report bugs or misfunctions detected.
