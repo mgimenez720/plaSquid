@@ -4,7 +4,7 @@ nextflow.enable.dsl = 2
 
 //Parameters definition
 params.contigs = "*.fasta"
-params.plsdbURL = "https://ndownloader.figshare.com/files/23582252"
+params.plsdbURL = "https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plsdb.fna.bz2"
 params.mmi = "plsdb.mmi"
 params.outdir = "Results"
 
@@ -28,6 +28,11 @@ include { MOBextract } from './workflows/MOBextract.nf'
 include { SumOutput } from './Modules/processes.nf'
 include { MinidistOut } from './Modules/processes.nf'
 include { RepsearchOut } from './Modules/processes.nf'
+include { FPCorrection } from './Modules/processes.nf'
+include { ChrDetection } from './Modules/processes.nf'
+include { FinalOutput } from './Modules/processes.nf'
+include { FinalOut } from './Modules/processes.nf'
+
 
 def sayHi(){
   log.info '''
@@ -140,9 +145,25 @@ if (params.repsearch) {
 
 
   SumOutput( minidist_ch, gene_search_ch, fasta_ch )
+  SumOutput.out 
+           .set{ correction_ch }
+
+  FPCorrection( correction_ch )
+  FPCorrection.out
+              .set{ chr_ch }
+
+      
+  ChrDetection( chr_ch )
+  ChrDetection.out  
+               .set{ final_ch }
+
+  FinalOutput( correction_ch, final_ch )
+  
 
 }
 }
+
+
 
 
 

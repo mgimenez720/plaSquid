@@ -98,7 +98,7 @@ for (x in 1:length(nct)) {
   
   }
 
-   # sbt <- c(sbt, as.character(tab1$sid))
+   
   
 }
 

@@ -423,8 +423,6 @@ process SumOutput {
 label 'small_mem'
 label 'big_cpus'
 
-publishDir "$params.outdir/", mode: "copy"
-
   input:
   path "Minidist_result.tsv"
   path "Plasmid_Report.tsv"
@@ -443,6 +441,112 @@ publishDir "$params.outdir/", mode: "copy"
 
 }
 
+process FPCorrection {
+
+label 'big_mem'
+label 'small_cpus'
+
+input:
+path "Result.fasta"
+path "Result.tsv"
+
+output:
+path "Chr_eval.fasta"
+
+script:
+
+"""
+
+Chr_eval.R Result.fasta Result.tsv
+
+
+"""
+
+}
+
+process FinalOut { 
+
+  publishDir "$params.outdir/", mode: "copy"
+  
+  input:  
+  path "Minidist_result.tsv"
+  path "Plasmid_Report.tsv"
+  path contigs
+  
+  output:
+  path "plaSquid_result.fasta"
+  path "plaSquid_result.tsv"
+  
+
+  script:
+  '''
+   
+  sum.final.R Minidist_result.tsv Plasmid_Report.tsv ${contigs}
+
+  ''' 
+}
+
+process ChrDetection {
+
+label 'big_mem'
+label 'small_cpus'
+
+input:
+path "Chr_eval.fasta"
+
+output:
+path "Bact_120.tsv"
+
+shell:
+
+'''
+var=$(wc -c Chr_eval.fasta | cut -f1 -d " ")
+
+if  (($var > 20000))
+then
+      
+      prodigal -a Chr_eval.faa -i Chr_eval.fasta
+
+      hmmsearch -o log --cut_ga --cpu !{task.cpus} --domtblout Bact_120.tsv !{baseDir}/data/Bact_120.hmm Chr_eval.faa
+
+else
+
+    echo "query_name" "taccession"  "tlen" "Marker_gene" "qaccession"  "qlen" "Evalue"  "score"  "bias" "num" "of"  "CEvalue"  "iEvalue"  \
+    "domscore" "dombias" "hmmfrom" "hmmto" "alifrom" "alito" "envfrom" "envto" "acc" > Bact_120.tsv
+
+fi
+
+'''
+
+}
+
+process FinalOutput {
+
+label 'big_mem'
+label 'small_cpus'
+
+input:
+path "Result.fasta"
+path "Result.tsv"
+path "Bact_120.tsv"
+
+output:
+path "plaSquid_result.tsv"
+path "plaSquid_result.fasta"
+
+publishDir "$params.outdir/", mode: "copy"
+
+script:
+
+"""
+
+Final_output.R Result.tsv Result.fasta Bact_120.tsv
+
+"""
+
+}
+
+
 process DownPLSDB {
 
 label 'big_mem'
@@ -454,10 +558,9 @@ label 'big_cpus'
   script:
   """
   
-  wget -O plsdb https://ndownloader.figshare.com/files/23582252
-  unzip plsdb
-  rm PLSDB_2020_06_29/plsdb.msh PLSDB_2020_06_29/plsdb.tsv PLSDB_2020_06_29/plsdb.abr
-  blastdbcmd -dbtype nucl -db PLSDB_2020_06_29/plsdb.fna -entry all -out plsdb.fna
+  wget https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plsdb.fna.bz2
+  bzip2 -d plsdb.fna.bz2
+  
     
   """
 
