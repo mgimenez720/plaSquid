@@ -21,13 +21,14 @@ You need nextflow installed in order to run plaSquid. Documentation is available
     
 PlaSquid can be ran using docker or conda.  
 
+
+If you want to generate a permanent conda environment (recommended) you can try:
+
+    conda env create -f environments/plaSquid.yml
+
 If you want to generate a permanent docker image you can try:
     
     docker pull mgimenez720/plasquid:latest
-    
-If you want to generate a permanent conda environment you can try:
-
-    conda env create -f environments/plaSquid.yml
 
 
 ### Dependencies
@@ -48,7 +49,7 @@ biostrings 2.58.0.
 ### Usage 
 
 
-    nextflow run main.nf --contigs {testdata/test.fasta} --outdir {plaSquid_result} -profile docker
+    nextflow run main.nf --contigs {testdata/test.fasta} --outdir {plaSquid_result} 
 
     arguments:
 
@@ -100,6 +101,13 @@ biostrings 2.58.0.
 
 Available preprint 
 https://doi.org/10.1101/2022.08.04.502827
+
+If you are going to use plaSquid results for further analysis, consider citing the following tools:
+
+MOBscan          (https://castillo.dicom.unican.es/mobscan_about/)
+RepliconFinder   (https://journals.asm.org/doi/pdf/10.1128/aac.02412-14)
+PLSDB            (https://ccb-microbe.cs.uni-saarland.de/plsdb/)
+
 
 ### Note
 
