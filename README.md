@@ -104,9 +104,10 @@ https://doi.org/10.1101/2022.08.04.502827
 
 If you are going to use plaSquid results for further analysis, consider citing the following tools:
 
-MOBscan          (https://castillo.dicom.unican.es/mobscan_about/)
-RepliconFinder   (https://journals.asm.org/doi/pdf/10.1128/aac.02412-14)
-PLSDB            (https://ccb-microbe.cs.uni-saarland.de/plsdb/)
+**MOBscan**          (https://castillo.dicom.unican.es/mobscan_about/)
+**RepliconFinder**   (https://journals.asm.org/doi/pdf/10.1128/aac.02412-14)
+**PLSDB**            (https://ccb-microbe.cs.uni-saarland.de/plsdb/)
+**GTDB-tk**          (https://github.com/Ecogenomics/GTDBTk)
 
 
 ### Note
