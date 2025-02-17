@@ -558,8 +558,8 @@ label 'big_cpus'
   script:
   """
   
-  wget https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plsdb.fna.bz2
-  bzip2 -d plsdb.fna.bz2
+  wget wget https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
+  mv download_fasta plsdb.fna
   
     
   """
