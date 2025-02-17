@@ -558,7 +558,7 @@ label 'big_cpus'
   script:
   """
   
-  wget wget https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
+  wget https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
   mv download_fasta plsdb.fna
   
     
